@@ -1,0 +1,35 @@
+<div class="w-full h-screen flex flex-column">
+  <div class="container-header bg-primary p-1 flex flex-wrap align-items-center gap-3">
+    <div *ngIf="menu_active" class="bg-white menu-activado h-full">
+      <img src="assets/images/shared/logo.png" alt="" class="ml-2">
+    </div>
+    <i class="bi bi-list text-4xl cursor-pointer" (click)="menu_active = !menu_active"></i>
+    <div class="col p-0">
+      <p class="text-right mr-3">Kevin Arévalo S</p>
+    </div>
+  </div>
+
+  <div class="grid m-0 gap-3 flex-wrap p-1" style="height: calc(100% - 60px);">
+    <div *ngIf="menu_active" class="h-full bg-white shadow-7 border-round-sm menu-activado">
+      <ng-container *ngFor="let item of menu_items">
+        <div class="w-full px-3 pb-3 pt-4 text-lg" 
+             [ngClass]="{'bg-blue-500 text-white': item.active, 'menu-item cursor-pointer': !item.active}"
+             (click)="(!item.active) && cambioMenu(item.ruta)">
+          <div class="w-full flex flex-wrap justify-content-between">
+            <div class="w-max">
+              <i [class]="item.icono"></i> <span class="ml-2">{{item.titulo}}</span>
+            </div>
+            <div class="w-max" *ngIf="item.ruta != '/login'">
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </ng-container>
+    </div>
+    <div class="col h-full overflow-y-auto border-solid border-1 border-round-xl border-300 p-3 mr-2">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+</div>
