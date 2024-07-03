@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
 import { LoginRequest } from '../../models/Request/loginRequest';
+import { NotificationService } from 'src/app/shared/services/notificacion.service';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicioSesion',
@@ -10,7 +12,9 @@ import { LoginRequest } from '../../models/Request/loginRequest';
 })
 export class InicioSesionComponent implements OnInit {
 
-  constructor(private _loginService: LoginService) { }
+  constructor(private _loginService: LoginService,
+              private notificationService: NotificationService,
+              private _router: Router) { }
   viewPasword : boolean = true;
 
   loginFormGroup = new FormGroup({
@@ -23,16 +27,21 @@ export class InicioSesionComponent implements OnInit {
 
   login() {
     const criteria : LoginRequest = {
-      email: this.loginFormGroup.value.email!,
+      correo: this.loginFormGroup.value.email!,
       password: this.loginFormGroup.value.password!
     }
-    this._loginService.login(criteria).subscribe(data=> {
-      if(data.respuesta.codigo == '0'){
-        
+    this._loginService.login(criteria).subscribe(dataResponse => {
+      if (dataResponse.codigo == '200') {
+        localStorage.setItem('token', dataResponse.data[0]);
+        localStorage.setItem('id_rol', dataResponse.data[1]);
+        this.notificationService.showSuccess(dataResponse.mensaje);
+        this._router.navigateByUrl("/inicio")
       }
       else {
-        alert(data.respuesta.msg);
+        this.notificationService.showError(dataResponse.mensaje);
       }
+    }, (err) => {
+      this.notificationService.showError(err.error.mensaje);
     });
   }
 

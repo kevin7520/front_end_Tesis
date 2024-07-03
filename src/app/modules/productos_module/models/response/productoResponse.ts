@@ -1,16 +1,27 @@
 import { GeneralResponse } from "src/app/shared/models/generaResponse";
 
 export interface ProductoResponse {
-    respuesta: GeneralResponse;
-    productos: ItemsResponse[];
+    codigo: string;
+    mensaje: string;
+    data: ItemsResponse[];
 }
 
 export interface ItemsResponse {
-    id_producto: number;
-    categoria: string;
-    codigo_producto: number;
+    idProducto: number;
+    idCategoria: number;
+    nombreCategoria: string;
+    codigoProducto: number;
     modelo: string;
-    serie_producto: string;
-    estado_producto: string;
-
+    serieProducto: string;
+    estado: string;
+    precio: number;
+    idEstadoProducto: number;
+    categoria: {
+        idCategoria: number;
+        nombreCategoria: string;
+    },
+    estadoProducto: {
+        idEstadoProducto: number;
+        nombreEstadoProducto: string;
+    }
 }

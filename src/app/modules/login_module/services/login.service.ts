@@ -11,18 +11,7 @@ export class LoginService {
 
 constructor(private http: HttpClient) {}
 
-  login(criteria: LoginRequest) : Observable<LoginResponse> {
-    const mockedResponse: LoginResponse = {
-      token: 'token_quemado',
-      idPersona: 1,
-      idRol: 1,
-      respuesta: {
-        codigo: "0",
-        msg: "OK"
-      }
-    };
-
-    // Devuelve un observable de la respuesta quemada
-    return of(mockedResponse);
+  login(criteria: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>('http://localhost:5222/api/Security/login',criteria);
   }
 }

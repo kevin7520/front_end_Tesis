@@ -12,7 +12,7 @@ export class NotificationService {
       duration: 3000,
       verticalPosition: 'top',
       horizontalPosition: 'end',
-      panelClass: ['success-snackbar']
+      panelClass: ['success-snackbar','mt-7']
     });
   }
 
@@ -21,7 +21,7 @@ export class NotificationService {
       duration: 3000,
       verticalPosition: 'top',
       horizontalPosition: 'end',
-      panelClass: ['error-snackbar']
+      panelClass: ['error-snackbar','mt-7']
     });
   }
 }

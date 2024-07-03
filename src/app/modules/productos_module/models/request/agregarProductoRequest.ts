@@ -1,7 +1,16 @@
 export interface agregarProductoRequest {
-    id_categoria: number,
-    codigo_producto: string,
+    idCategoria: number,
+    codigoProducto: string,
     modelo: string,
-    serie_producto: string,
-    id_estado_producto: number,
+    idEstadoProducto: number,
+    serieProducto: string,
+    precio: number;
+    categoria: {
+        idCategoria: number;
+        nombreCategoria: string;
+    },
+    estadoProducto: {
+        idEstadoProducto: number;
+        nombreEstadoProducto: string;
+  }
 }
