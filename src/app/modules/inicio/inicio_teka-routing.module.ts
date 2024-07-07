@@ -21,8 +21,11 @@ const routes: Routes = [
       {
         path: 'reportes', loadChildren: () => import('../reportes_module/reportes.module').then(m => m.ReportesModule)
       },
+      {
+        path: 'crear', loadChildren: () => import('../login_module/login.module').then(m => m.LoginModule)
+      },
       { path: '', 
-        redirectTo: 'servicios', 
+        redirectTo: 'reportes', 
         pathMatch: 'full'
       },
     ]

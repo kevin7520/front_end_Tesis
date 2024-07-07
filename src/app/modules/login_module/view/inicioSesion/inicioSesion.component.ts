@@ -28,7 +28,7 @@ export class InicioSesionComponent implements OnInit {
   login() {
     const criteria : LoginRequest = {
       correo: this.loginFormGroup.value.email!,
-      password: this.loginFormGroup.value.password!
+      contraseña: this.loginFormGroup.value.password!
     }
     this._loginService.login(criteria).subscribe(dataResponse => {
       if (dataResponse.codigo == '200') {

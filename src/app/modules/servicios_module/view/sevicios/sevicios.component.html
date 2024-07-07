@@ -1,9 +1,36 @@
 <div class="w-full">
-  <p class="text-center text-xl">Servicio de instalación</p>
-  <div class="w-full mt-4 flex">
-    <p>Tipo de instalación</p>
-    <p>Instalación de un producto</p>
-    <p>Instalación de bbq</p>
-    <p>Instalación en promoción</p>
-  </div>
+  <ng-container *ngIf="viewMostrarMesaTrabajo; else menuSeleccionado">
+    <p class="text-center text-xl mt-2">Servicios</p>
+    <div class="w-full flex justify-content-center flex-wrap">
+      <div class="w-max flex gap-5 flex-wrap mt-4">
+        <div class="bg-white shadow-5 py-3 px-6 border-round-lg card-container cursor-pointer" (click)="seleccionarMenu(1)">
+          <p class="text-center text-lg mb-3 font-medium">Intalación</p>
+          <div class="w-full flex justify-content-center flex-wrap">
+            <img src="assets/images/servicios/instalacion-icono.png" width="80px" alt="">
+          </div>
+        </div>
+        <div class="bg-white shadow-5 py-3 px-6 border-round-lg card-container cursor-pointer" (click)="seleccionarMenu(2)">
+          <p class="text-center text-lg mb-3 font-medium">Reparación</p>
+          <div class="w-full flex justify-content-center flex-wrap">
+            <img src="assets/images/servicios/reparacion-icono.png" width="80px" alt="">
+          </div>
+        </div>
+        <div class="bg-white shadow-5 py-3 px-6 border-round-lg card-container cursor-pointer" (click)="seleccionarMenu(3)">
+          <p class="text-center text-lg mb-3 font-medium">Mantenimiento</p>
+          <div class="w-full flex justify-content-center flex-wrap">
+            <img src="assets/images/servicios/mantenimiento-icono.png" width="80px" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #menuSeleccionado>
+    <ng-container *ngIf="mesaTrabajoSeleccionada == 1">
+      <div class="w-full">
+        <app-servicio-instalacion (_salirEvent)="salirMenu()"></app-servicio-instalacion>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="mesaTrabajoSeleccionada == 2">dd</ng-container>
+    <ng-container *ngIf="mesaTrabajoSeleccionada == 3">ff</ng-container>
+  </ng-template>
 </div>

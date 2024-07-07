@@ -31,6 +31,13 @@ export class InicioComponent implements OnInit {
       if (Rol == '1') {
         this.menu_items = [
           {
+            titulo: "Crear Usuario",
+            id: 0,
+            icono: "bi bi-person-fill-add",
+            ruta: "/inicio/crear/usuario",
+            active: false
+          },
+          {
             titulo: "Sevicios",
             id: 1,
             icono: "bi bi-tools",

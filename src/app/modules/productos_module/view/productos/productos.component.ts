@@ -48,7 +48,6 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
   productoFormGroup = new FormGroup({
     codigo: new FormControl('', { validators: Validators.required, updateOn: 'blur' }),
     modelo: new FormControl('', { validators: Validators.required, updateOn: 'blur' }),
-    serie: new FormControl('', { validators: Validators.required, updateOn: 'blur' }),
     categoria: new FormControl(0, { validators: Validators.required, updateOn: 'blur' }),
     estado: new FormControl(0, { validators: Validators.required, updateOn: 'blur' }),
   });
@@ -110,7 +109,7 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
       idCategoria: this.productoFormGroup.value.categoria!,
       codigoProducto: this.productoFormGroup.value.codigo!,
       modelo: this.productoFormGroup.value.modelo!,
-      serieProducto: this.productoFormGroup.value.serie!,
+      serieProducto: "eliminar",
       idEstadoProducto: this.productoFormGroup.value.estado!,
       precio: 0,
       categoria: {
@@ -174,7 +173,7 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
     const criteria : EditarProductoRequest = {
       idCategoria: this.productoFormGroup.value.categoria!,
       modelo: this.productoFormGroup.value.modelo!,
-      serieProducto: this.productoFormGroup.value.serie!,
+      serieProducto: "eliminar",
       idEstadoProducto: this.productoFormGroup.value.estado!,
       precio: 0
     }
@@ -202,7 +201,6 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
     this.productoFormGroup.patchValue({
       codigo: String(dataTemp.codigoProducto),
       modelo: String(dataTemp.modelo),
-      serie: String(dataTemp.serieProducto),
       categoria: dataTemp.idCategoria,
       estado: dataTemp.idEstadoProducto
     });

@@ -9,7 +9,19 @@ export class SeviciosComponent implements OnInit {
 
   constructor() { }
 
+  viewMostrarMesaTrabajo: boolean = true;
+  mesaTrabajoSeleccionada: number = 0;
   ngOnInit() {
+  }
+
+  seleccionarMenu(id: number) {
+    this.mesaTrabajoSeleccionada = id;
+    this.viewMostrarMesaTrabajo = false;
+  }
+
+  salirMenu() {
+     this.mesaTrabajoSeleccionada = 0;
+    this.viewMostrarMesaTrabajo = true;
   }
 
 }
