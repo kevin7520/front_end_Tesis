@@ -5,6 +5,8 @@ import { SeviciosComponent } from './view/sevicios/sevicios.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ServicioInstalacionComponent } from './view/servicio-instalacion/servicio-instalacion.component';
 import { ClientesComponent } from './common/clientes/clientes.component';
+import { TecnicosComponent } from './common/tecnicos/tecnicos.component';
+import { ProductosComponent } from './common/productos/productos.component';
 
 @NgModule({
   imports: [
@@ -15,7 +17,9 @@ import { ClientesComponent } from './common/clientes/clientes.component';
   declarations: [
     SeviciosComponent,
     ServicioInstalacionComponent,
-    ClientesComponent
+    ClientesComponent,
+    TecnicosComponent,
+    ProductosComponent
   ]
 })
 export class ServciosModule { }

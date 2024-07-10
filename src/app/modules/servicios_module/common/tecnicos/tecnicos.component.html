@@ -1,0 +1,173 @@
+<div class="w-full">
+  <p class="text-center text-xl mt-2 mb-5">Datos del tecnico</p>
+
+  <mat-stepper [linear]="true" #stepper (selectionChange)="onSelectionChange($event,stepper)">
+    <mat-step [editable]="editable" [completed]="validadorComplete">
+      <ng-template matStepLabel>Datos del tècnico</ng-template>
+        <div class="w-full m-0 grid gap-5">
+          <p class="text-lg w-max" style="margin-top: 6.5px;">Elige una opción: </p>
+          <div class="col p-0 flex gap-3">
+            <div (click)="tipoCliente = 1"
+              [ngClass]="{'estilos-servicios-activos font-semibold': tipoCliente == 1,'estilos-servicios-inactivos cursor-pointer': tipoCliente != 1}"
+              class="w-max p-2 border-round-xl">
+              <p>Técnico guardado</p>
+            </div>
+            <div (click)="tipoCliente = 2"
+              [ngClass]="{'estilos-servicios-activos font-semibold': tipoCliente == 2,'estilos-servicios-inactivos cursor-pointer': tipoCliente != 2}"
+              class="w-max p-2 border-round-xl">
+              <p>Nuevo técnico</p>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="tipoCliente == 1">
+          <div class="border-solid border-1 border-round-md border-300 p-3 estilo-card-servicio mt-4">
+            <p class="text-xl text-center">Listado de técnicos</p>
+            <div class="mt-4 w-full border-solid border-1 border-round-md border-300">
+              <div class="w-full surface-100 p-2 border-round-md border-noround-bottom">
+                <p class="text-lg">Buscar por:</p>
+              </div>
+              <div class="grid my-2 mx-2">
+                <div class="col">
+                  <mat-form-field style="width: 100%;">
+                    <mat-label>Nombre del técnico</mat-label>
+                    <input [(ngModel)]="nombreInput" matInput>
+                  </mat-form-field>
+                </div>
+                <div class="col">
+                  <mat-form-field style="width: 100%;">
+                    <mat-label>Identificación del técnico</mat-label>
+                    <input [(ngModel)]="identificacionInput" matInput>
+                  </mat-form-field>
+                </div>
+                <div class="w-max col-fixed flex flex-wrap align-content-center">
+                  <button (click)="filtrar()" mat-raised-button class="bg-primary">Filtrar</button>
+                </div>
+              </div>
+            </div>
+            <div class="w-full mt-3">
+              <div class="w-full grid m-0">
+                <div class="col p-0">
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                    aria-label="Select page of periodic elements">
+                  </mat-paginator>
+                </div>
+              </div>
+              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 mt-3 w-full">
+        
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef> Id </th>
+                  <td mat-cell *matCellDef="let element"> {{element.idTecnico}} </td>
+                </ng-container>
+        
+                <ng-container matColumnDef="identificacion">
+                  <th mat-header-cell *matHeaderCellDef> Indentificación </th>
+                  <td mat-cell *matCellDef="let element"> {{element.cedula}} </td>
+                </ng-container>
+        
+                <ng-container matColumnDef="nombre">
+                  <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                  <td mat-cell *matCellDef="let element"> {{element.nombreTecnico}} </td>
+                </ng-container>
+        
+                <ng-container matColumnDef="telefono">
+                  <th mat-header-cell *matHeaderCellDef> Teléfono </th>
+                  <td mat-cell *matCellDef="let element"> {{element.telefonoTecnico}} </td>
+                </ng-container>
+        
+                <ng-container matColumnDef="acciones" class="text-center">
+                  <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+                  <td mat-cell *matCellDef="let element" class="text-center">
+                    <div class="flex flex-wrap gap-3 text-center">
+                      <i (click)="executeAndProceed(stepper,element.idTecnico)"
+                        class="bi bi-check2-circle cursor-pointer text-center w-full"></i>
+                    </div>
+                  </td>
+                </ng-container>
+        
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell" colspan="4">No existe datos</td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-12 flex justify-content-center mt-4">
+              <div class="w-max flex gap-3">
+                <button (click)="cancelar()" mat-raised-button color="warn">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="tipoCliente == 2">
+          <div app-content class="border-solid border-1 border-round-md border-300 estilo-card-servicio mt-4">
+            <div class="w-full surface-100 p-3 border-round-md border-noround-bottom">
+              <p class="text-lg">Crear técnico</p>
+            </div>
+            <form action="" [formGroup]="clientesFormGroup" style="box-sizing: border-box;" class="grid w-full p-3 m-0">
+              <div class="col-6">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Identificación</mat-label>
+                  <input [maxLength]="10" matInput formControlName="cedula">
+                </mat-form-field>
+              </div>
+              <div class="col-6">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Nombres</mat-label>
+                  <input matInput formControlName="nombres">
+                </mat-form-field>
+              </div>
+              <div class="col-6">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Teléfono</mat-label>
+                  <input [maxLength]="10" matInput formControlName="telefono">
+                </mat-form-field>
+              </div>
+              <div class="col-12 flex justify-content-center">
+                <div class="w-max flex gap-3">
+                  <button (click)="cancelar()" mat-raised-button color="warn">Cancelar</button>
+        
+                  <button type="button" mat-raised-button [ngClass]="{'opacity-50': clientesFormGroup.invalid}"
+                    [disabled]="clientesFormGroup.invalid" class="bg-primary" (click)="crearTecnico(stepper)">Aceptar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </ng-container>
+    </mat-step>
+    <mat-step [editable]="editable" [completed]="validadorComplete2">
+      <ng-template matStepLabel>Horarios</ng-template>
+      <p>Elige el horario de atención</p>
+      <form action="" [formGroup]="horarioFormGroup" style="box-sizing: border-box;" class="grid w-full p-3 m-0">
+        <div class="col-6">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Fecha de instalación</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="fecha">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Selecciona un horario</mat-label>
+            <mat-select formControlName="horario">
+              <ng-container *ngFor="let horario of timeSlots;">
+                <mat-option [value]="horario.id" [disabled]="bloquearHorario(horario.horaInicio)">{{horario.horario}}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+      <div class="w-full flex flex-wrap justify-content-center gap-4">
+        <button type="button" (click)="returnAndProceed(stepper)" mat-raised-button color="warn">Regresar</button>
+        <button type="button" mat-raised-button [ngClass]="{'opacity-50': horarioFormGroup.invalid || horarioFormGroup.value.horario! == 0}"
+          [disabled]="horarioFormGroup.invalid || horarioFormGroup.value.horario! == 0" class="bg-primary" (click)="crearHorarios(stepper)">Aceptar</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Producto</ng-template>
+      <app-productos (guardasProductos)="editarServicioProductos($event)"></app-productos>
+    </mat-step>
+  </mat-stepper>
+</div>

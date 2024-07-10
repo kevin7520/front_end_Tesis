@@ -12,7 +12,10 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSelectModule} from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -29,7 +32,10 @@ import {MatRadioModule} from '@angular/material/radio';
     MatPaginatorModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   declarations: [
     ModalComponent
@@ -48,7 +54,10 @@ import {MatRadioModule} from '@angular/material/radio';
     MatPaginatorModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class SharedModule { }

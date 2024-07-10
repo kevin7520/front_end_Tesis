@@ -28,7 +28,7 @@ export class InicioComponent implements OnInit {
   llenarMenu() {
     const Rol = localStorage.getItem('id_rol');
       debugger;
-      if (Rol == '1') {
+      if (Rol == 'Admin') {
         this.menu_items = [
           {
             titulo: "Crear Usuario",

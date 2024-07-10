@@ -26,29 +26,32 @@
             <div class="col">
               <mat-form-field style="width: 100%;">
                 <mat-label>Nombre del cliente</mat-label>
-                <input matInput>
+                <input [(ngModel)]="nombreInput" matInput>
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field style="width: 100%;">
                 <mat-label>Selecciona una estado</mat-label>
-                <mat-select>
-                  <mat-option value="categoria.idCategoria">categoria.nombreCategoria</mat-option>
+                <mat-select [(ngModel)]="estado">
+                  <ng-container *ngFor="let estado of estadosServicio;">
+                    <mat-option [value]="estado.idEstadoServicio">{{estado.nombreEstadoServicio}}</mat-option>
+                  </ng-container>
                 </mat-select>
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field style="width: 100%;">
                 <mat-label>Selecciona una técnico</mat-label>
-                <mat-select>
+                <mat-select [(ngModel)]="tecnico">
                   <ng-container *ngFor="let tecnico of tecnicos;">
                     <mat-option [value]="tecnico.idTecnico">{{tecnico.nombreTecnico}}</mat-option>
                   </ng-container>
                 </mat-select>
               </mat-form-field>
             </div>
-            <div class="w-max col-fixed flex flex-wrap align-content-center">
-              <button mat-raised-button class="bg-primary">Filtrar</button>
+            <div class="w-max col-fixed flex flex-wrap align-content-center gap-3">
+              <button mat-raised-button color="warn" (click)="borrar()">Borrar</button>
+              <button mat-raised-button class="bg-primary" (click)="filtrar()">Filtrar</button>
             </div>
           </div>
         </div>
@@ -64,52 +67,47 @@
           </div>
           <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 mt-3">
           
-            <ng-container matColumnDef="id_servicio">
-              <th mat-header-cell *matHeaderCellDef> Id </th>
-              <td mat-cell *matCellDef="let element"> {{element.id_servicio}} </td>
+            <ng-container matColumnDef="numero_solicitud">
+              <th mat-header-cell *matHeaderCellDef> Número de solicitud </th>
+              <td mat-cell *matCellDef="let element"> {{element.idServicio}} </td>
             </ng-container>
           
             <ng-container matColumnDef="nombre_cliente">
               <th mat-header-cell *matHeaderCellDef> Nombre cliente </th>
-              <td mat-cell *matCellDef="let element"> {{element.categoria.nombreCategoria}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.cliente.nombres}} </td>
             </ng-container>
           
             <ng-container matColumnDef="telefono_cliente">
               <th mat-header-cell *matHeaderCellDef> Teléfono cliente </th>
-              <td mat-cell *matCellDef="let element"> {{element.codigoProducto}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.cliente.telefono}} </td>
             </ng-container>
           
             <ng-container matColumnDef="dirreccion_cliente">
               <th mat-header-cell *matHeaderCellDef> Dirección cliente </th>
-              <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.cliente.direccion}} </td>
             </ng-container>
-          
-            <ng-container matColumnDef="numero_solicitud">
-                  <th mat-header-cell *matHeaderCellDef> Número de solicitud </th>
-                  <td mat-cell *matCellDef="let element"> {{element.serieProducto}} </td>
-                </ng-container>
           
             <ng-container matColumnDef="fecha_coordinacion">
               <th mat-header-cell *matHeaderCellDef> Fecha de coordinación </th>
-              <td mat-cell *matCellDef="let element"> {{element.estadoProducto.nombreEstadoProducto}} </td>
+              <td mat-cell *matCellDef="let element"> {{(element.horarios.length == 0) ? '-': element.horarios[0].fecha | date:'dd/MM/yyyy' }}</td>
             </ng-container>
           
             <ng-container matColumnDef="nombre_tecnico">
               <th mat-header-cell *matHeaderCellDef> Nombre técnico </th>
-              <td mat-cell *matCellDef="let element"> {{element.estadoProducto.nombreEstadoProducto}} </td>
+              <td mat-cell *matCellDef="let element"> {{ (element.tecnico == null) ? '-': element.tecnico.nombreTecnico}} </td>
             </ng-container>
           
             <ng-container matColumnDef="estado">
               <th mat-header-cell *matHeaderCellDef> Estado </th>
-              <td mat-cell *matCellDef="let element"> {{element.estadoProducto.nombreEstadoProducto}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.estadoServicioDto.nombreEstadoServicio}} </td>
             </ng-container>
           
             <ng-container matColumnDef="acciones">
               <th mat-header-cell *matHeaderCellDef> Acciones </th>
               <td mat-cell *matCellDef="let element">
-                <div class="w-max flex flex-wrap gap-3">
-                  <i class="bi bi-pencil-square cursor-pointer"></i>
-                  <i class="bi bi-trash-fill cursor-pointer"></i>
+                <div class="w-full flex flex-wrap justify-content-center gap-3">
+                  <i *ngIf="element.estadoServicioDto.idEstadoServicio < 3" class="bi bi-pencil-square cursor-pointer" (click)="editarServicio(element.idServicio)"></i>
+                  <i *ngIf="element.estadoServicioDto.idEstadoServicio != 4" class="bi bi-file-lock2-fill cursor-pointer" (click)="eliminarServicioCambiarEstado(element.idServicio)"></i>
                 </div>
               </td>
             </ng-container>
@@ -125,16 +123,226 @@
       </div>
     </div>
     <div class="w-full mt-4" *ngIf="tipoInstalacion == 2">
-      <div class="mt-4 w-full border-solid border-1 border-round-md border-300">
-        <div class="w-full surface-100 p-2 border-round-md border-noround-bottom">
-          <p class="text-lg text-center">Listado de servicio instalación de BBQ</p>
+      <div class="border-solid border-1 border-round-md border-300 p-3 estilo-card-servicio">
+        <p class="text-xl text-center">Listado de servicio instalación BBQ</p>
+        <div class="mt-4 w-full border-solid border-1 border-round-md border-300">
+          <div class="w-full surface-100 p-2 border-round-md border-noround-bottom">
+            <p class="text-lg">Buscar por:</p>
+          </div>
+          <div class="grid my-2 px-2">
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>Nombre del cliente</mat-label>
+                <input [(ngModel)]="nombreInput" matInput>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>Selecciona una estado</mat-label>
+                <mat-select [(ngModel)]="estado">
+                  <ng-container *ngFor="let estado of estadosServicio;">
+                    <mat-option [value]="estado.idEstadoServicio">{{estado.nombreEstadoServicio}}</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>Selecciona una técnico</mat-label>
+                <mat-select [(ngModel)]="tecnico">
+                  <ng-container *ngFor="let tecnico of tecnicos;">
+                    <mat-option [value]="tecnico.idTecnico">{{tecnico.nombreTecnico}}</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="w-max col-fixed flex flex-wrap align-content-center gap-3">
+              <button mat-raised-button color="warn" (click)="borrar()">Borrar</button>
+              <button mat-raised-button class="bg-primary" (click)="filtrar()">Filtrar</button>
+            </div>
+          </div>
+        </div>
+        <div class="w-full mt-3">
+          <div class="w-full grid m-0">
+            <div class="w-max flex align-content-center align-items-center">
+              <button mat-raised-button (click)="numeroPaso = 2">Agregar solicitud</button>
+            </div>
+            <div class="col p-0">
+              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+              </mat-paginator>
+            </div>
+          </div>
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 mt-3">
+      
+            <ng-container matColumnDef="numero_solicitud">
+              <th mat-header-cell *matHeaderCellDef> Número de solicitud </th>
+              <td mat-cell *matCellDef="let element"> {{element.idServicio}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="nombre_cliente">
+              <th mat-header-cell *matHeaderCellDef> Nombre cliente </th>
+              <td mat-cell *matCellDef="let element"> {{element.cliente.nombres}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="telefono_cliente">
+              <th mat-header-cell *matHeaderCellDef> Teléfono cliente </th>
+              <td mat-cell *matCellDef="let element"> {{element.cliente.telefono}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="dirreccion_cliente">
+              <th mat-header-cell *matHeaderCellDef> Dirección cliente </th>
+              <td mat-cell *matCellDef="let element"> {{element.cliente.direccion}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="fecha_coordinacion">
+              <th mat-header-cell *matHeaderCellDef> Fecha de coordinación </th>
+              <td mat-cell *matCellDef="let element"> {{(element.horarios.length == 0) ? '-': element.horarios[0].fecha |
+                date:'dd/MM/yyyy' }}</td>
+            </ng-container>
+      
+            <ng-container matColumnDef="nombre_tecnico">
+              <th mat-header-cell *matHeaderCellDef> Nombre técnico </th>
+              <td mat-cell *matCellDef="let element"> {{ (element.tecnico == null) ? '-': element.tecnico.nombreTecnico}}
+              </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef> Estado </th>
+              <td mat-cell *matCellDef="let element"> {{element.estadoServicioDto.nombreEstadoServicio}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef> Acciones </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="w-full flex flex-wrap justify-content-center gap-3">
+                  <i *ngIf="element.estadoServicioDto.idEstadoServicio < 3" class="bi bi-pencil-square cursor-pointer"
+                    (click)="editarServicio(element.idServicio)"></i>
+                  <i *ngIf="element.estadoServicioDto.idEstadoServicio != 4" class="bi bi-file-lock2-fill cursor-pointer"
+                    (click)="eliminarServicioCambiarEstado(element.idServicio)"></i>
+                </div>
+              </td>
+            </ng-container>
+      
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No existe datos</td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
     <div class="w-full mt-4" *ngIf="tipoInstalacion == 3">
-      <div class="mt-4 w-full border-solid border-1 border-round-md border-300">
-        <div class="w-full surface-100 p-2 border-round-md border-noround-bottom">
-          <p class="text-lg text-center">Listado de servicio instalación promoción</p>
+      <div class="border-solid border-1 border-round-md border-300 p-3 estilo-card-servicio">
+        <p class="text-xl text-center">Listado de servicio instalación promoción</p>
+        <div class="mt-4 w-full border-solid border-1 border-round-md border-300">
+          <div class="w-full surface-100 p-2 border-round-md border-noround-bottom">
+            <p class="text-lg">Buscar por:</p>
+          </div>
+          <div class="grid my-2 px-2">
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>Nombre del cliente</mat-label>
+                <input [(ngModel)]="nombreInput" matInput>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>Selecciona una estado</mat-label>
+                <mat-select [(ngModel)]="estado">
+                  <ng-container *ngFor="let estado of estadosServicio;">
+                    <mat-option [value]="estado.idEstadoServicio">{{estado.nombreEstadoServicio}}</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field style="width: 100%;">
+                <mat-label>Selecciona una técnico</mat-label>
+                <mat-select [(ngModel)]="tecnico">
+                  <ng-container *ngFor="let tecnico of tecnicos;">
+                    <mat-option [value]="tecnico.idTecnico">{{tecnico.nombreTecnico}}</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="w-max col-fixed flex flex-wrap align-content-center gap-3">
+              <button mat-raised-button color="warn" (click)="borrar()">Borrar</button>
+              <button mat-raised-button class="bg-primary" (click)="filtrar()">Filtrar</button>
+            </div>
+          </div>
+        </div>
+        <div class="w-full mt-3">
+          <div class="w-full grid m-0">
+            <div class="w-max flex align-content-center align-items-center">
+              <button mat-raised-button (click)="numeroPaso = 2">Agregar solicitud</button>
+            </div>
+            <div class="col p-0">
+              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+              </mat-paginator>
+            </div>
+          </div>
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 mt-3">
+      
+            <ng-container matColumnDef="numero_solicitud">
+              <th mat-header-cell *matHeaderCellDef> Número de solicitud </th>
+              <td mat-cell *matCellDef="let element"> {{element.idServicio}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="nombre_cliente">
+              <th mat-header-cell *matHeaderCellDef> Nombre cliente </th>
+              <td mat-cell *matCellDef="let element"> {{element.cliente.nombres}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="telefono_cliente">
+              <th mat-header-cell *matHeaderCellDef> Teléfono cliente </th>
+              <td mat-cell *matCellDef="let element"> {{element.cliente.telefono}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="dirreccion_cliente">
+              <th mat-header-cell *matHeaderCellDef> Dirección cliente </th>
+              <td mat-cell *matCellDef="let element"> {{element.cliente.direccion}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="fecha_coordinacion">
+              <th mat-header-cell *matHeaderCellDef> Fecha de coordinación </th>
+              <td mat-cell *matCellDef="let element"> {{(element.horarios.length == 0) ? '-': element.horarios[0].fecha |
+                date:'dd/MM/yyyy' }}</td>
+            </ng-container>
+      
+            <ng-container matColumnDef="nombre_tecnico">
+              <th mat-header-cell *matHeaderCellDef> Nombre técnico </th>
+              <td mat-cell *matCellDef="let element"> {{ (element.tecnico == null) ? '-': element.tecnico.nombreTecnico}}
+              </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef> Estado </th>
+              <td mat-cell *matCellDef="let element"> {{element.estadoServicioDto.nombreEstadoServicio}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef> Acciones </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="w-full flex flex-wrap justify-content-center gap-3">
+                  <i *ngIf="element.estadoServicioDto.idEstadoServicio < 3" class="bi bi-pencil-square cursor-pointer"
+                    (click)="editarServicio(element.idServicio)"></i>
+                  <i *ngIf="element.estadoServicioDto.idEstadoServicio != 4" class="bi bi-file-lock2-fill cursor-pointer"
+                    (click)="eliminarServicioCambiarEstado(element.idServicio)"></i>
+                </div>
+              </td>
+            </ng-container>
+      
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No existe datos</td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -146,6 +354,9 @@
   </div>
   <div class="w-full" *ngIf="numeroPaso == 2">
     <app-clientes (usuarioSeleccionado)="obtenerCliente($event)" (cancelarEvent)="numeroPaso = 1"></app-clientes>
+  </div>
+  <div class="w-full" *ngIf="numeroPaso == 3">
+    <app-tecnicos (salirEvent)="guardoServicio()" [servicio]="servicioSeleccionado" (usuarioSeleccionado)="obtenerCliente($event)" (cancelarEvent)="numeroPaso = 1"></app-tecnicos>
   </div>
 </div>
 <!-- 

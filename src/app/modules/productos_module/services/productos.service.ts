@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ProductosRequest } from '../models/request/productosRequest';
@@ -21,27 +21,39 @@ export class ProductosService {
 constructor(private http: HttpClient) {}
 
   getProductos(criteria: ProductosRequest): Observable<ProductoResponse> {
-    return this.http.get<ProductoResponse>('http://localhost:5222/api/Producto');
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<ProductoResponse>('http://localhost:5222/api/Producto',{ headers });
     
   }
 
-  agregarProducto(criteria: agregarProductoRequest) : Observable<AgregarProductoResponse> {
-    return this.http.post<AgregarProductoResponse>('http://localhost:5222/api/Producto',criteria);
+  agregarProducto(criteria: agregarProductoRequest): Observable<AgregarProductoResponse> {
+     const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<AgregarProductoResponse>('http://localhost:5222/api/Producto',criteria,{ headers });
   }
 
-  eliminarProducto(criteria: EliminarProductoRequest) : Observable<EliminarProductoResponse> {
-    return this.http.delete<EliminarProductoResponse>('http://localhost:5222/api/Producto/'+criteria.id_producto);
+  eliminarProducto(criteria: EliminarProductoRequest): Observable<EliminarProductoResponse> {
+     const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete<EliminarProductoResponse>('http://localhost:5222/api/Producto/'+criteria.id_producto,{ headers });
   }
 
-  editarProducto(criteria: EditarProductoRequest, idProducto : number): Observable<EditarProductoResponse> {
-    return this.http.put<EditarProductoResponse>('http://localhost:5222/api/Producto/'+idProducto,criteria);
+  editarProducto(criteria: EditarProductoRequest, idProducto: number): Observable<EditarProductoResponse> {
+     const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put<EditarProductoResponse>('http://localhost:5222/api/Producto/'+idProducto,criteria,{ headers });
   }
 
   obtenerCategoria(): Observable<ObtenerCategoriaResponse[]> {
-    return this.http.get<ObtenerCategoriaResponse[]>('http://localhost:5222/api/Producto/Categorias');
+     const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<ObtenerCategoriaResponse[]>('http://localhost:5222/api/Producto/Categorias',{ headers });
   }
 
   obtenerEstados(): Observable<ObtenerEstadosResponse[]> {
-    return this.http.get<ObtenerEstadosResponse[]>('http://localhost:5222/api/Producto/Estados');
+     const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<ObtenerEstadosResponse[]>('http://localhost:5222/api/Producto/Estados',{ headers });
   }
 }

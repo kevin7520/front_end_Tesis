@@ -1,0 +1,14 @@
+.estilos-servicios-inactivos {
+    background-color: rgb(183, 183, 183);
+    color: #424242;
+    transition: transform 0.3s ease;
+}
+
+.estilos-servicios-activos {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.estilos-servicios-inactivos:hover {
+    transform: scale(1.1);
+}
