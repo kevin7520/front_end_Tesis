@@ -15,7 +15,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatSortModule} from '@angular/material/sort';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   imports: [
@@ -35,7 +37,9 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatRadioModule,
     MatStepperModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSortModule,
+    MatCheckboxModule
   ],
   declarations: [
     ModalComponent
@@ -57,7 +61,9 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatRadioModule,
     MatStepperModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSortModule,
+    MatCheckboxModule
   ]
 })
 export class SharedModule { }

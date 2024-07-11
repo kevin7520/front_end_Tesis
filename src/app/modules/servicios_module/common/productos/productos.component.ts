@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { agregarProductoRequest } from 'src/app/modules/productos_module/models/request/agregarProductoRequest';
@@ -11,6 +11,8 @@ import { ItemsResponse } from 'src/app/modules/productos_module/models/response/
 import { ProductosService } from 'src/app/modules/productos_module/services/productos.service';
 import { NotificationService } from 'src/app/shared/services/notificacion.service';
 import { Producto } from '../../models/producto.model';
+import { SelectionModel } from '@angular/cdk/collections';
+import { ServiciosService } from '../../services/servicios.service';
 
 @Component({
   selector: 'app-productos',
@@ -21,8 +23,9 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
   productoFormGroup: any;
 
   @Output() guardasProductos = new EventEmitter;
+  @Input() tipo = 1;
 
-  constructor(private _productosService : ProductosService, private notificationService: NotificationService) { }
+  constructor(private _productosService : ProductosService, private notificationService: NotificationService, private serviciosService: ServiciosService) { }
   displayedColumns: string[] = 
   [
     'id_producto', 
@@ -32,8 +35,18 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
     'estado_producto',
     'acciones'
   ];
+  displayedColumns2: string[] = 
+    [
+    'seleccion',
+    'id_producto', 
+    'categoria', 
+    'codigo_producto', 
+    'modelo', 
+    'estado_producto'
+  ];
   PRODUCTOS_DATA: ItemsResponse[] = [];
   dataSource = new MatTableDataSource<ItemsResponse>(this.PRODUCTOS_DATA);
+  selection = new SelectionModel<any>(true, []);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -75,7 +88,6 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
         this.notificationService.showSuccess('No se encontraron productos');
       }
     }, (err) => {
-      debugger;
       if (err.error.codigo == '404') {
         this.notificationService.showError('No se encontraron productos');
       }
@@ -88,7 +100,6 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
   obtenerCategoria() {
     this._productosService.obtenerCategoria().subscribe(data => {
       this.categorias = [...data];
-      debugger;
     }, err => {
       this.notificationService.showError('¡Ocurrió un error al obtener las categorias!');
     });
@@ -97,7 +108,6 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
   obtenerEstados() {
     this._productosService.obtenerEstados().subscribe(data => {
       this.estados = [...data];
-      debugger;
     }, err => {
       this.notificationService.showError('¡Ocurrió un error al obtener las categorias!');
     });
@@ -139,6 +149,7 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
 
   elegir(id: number) {
     this.productosDataAdicional = [];
+    this.productosDataAdicional = [];
     const data : ItemsResponse = this.PRODUCTOS_DATA.find(data => data.idProducto == id)!;
     this.productosSeleccionados.push(data);
     this.elegitProducto = false;
@@ -150,8 +161,78 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
     });
   }
 
+  elegirVariosProductos() {
+     this.productosDataAdicional = [];
+    this.productosDataAdicional = [];
+    debugger;
+    this.selection.selected.forEach(dataArray => {
+      const data : ItemsResponse = this.PRODUCTOS_DATA.find(data => data.idProducto == dataArray.idProducto)!;
+      this.productosSeleccionados.push(data);
+      this.elegitProducto = false;
+      this.productosDataAdicional.push({
+        idProducto: data.idProducto,
+        nombreProducto: data.modelo,
+        validado: false,
+        valor: 0,
+        serie: ""
+      });
+    })
+
+    
+  }
+
   guardarProductos() {
     this.guardasProductos.emit(this.productosDataAdicional);
+  }
+
+  verificarProducto(idProducto: number, serie: string) {
+    const idProductoTemp = this.productosDataAdicional.findIndex( data => data.idProducto == idProducto)
+    if (this.productosDataAdicional.some(data => (serie == data.serie && data.idProducto != idProducto &&  data.validado))) {
+      this.notificationService.showError("Número de serie ya esta ocupado");
+      this.productosDataAdicional[idProductoTemp].validado = false
+    }
+    else {
+      this.serviciosService.verificarSerie(serie).subscribe(dataResponse => {
+        if (dataResponse.codigo == "200") {
+          this.productosDataAdicional[idProductoTemp].validado = true;
+          this.notificationService.showSuccess("Producto validado");
+        }
+        else {
+          this.productosDataAdicional[idProductoTemp].validado = false;
+           this.notificationService.showError("Número de serie ya esta ocupado");
+        }
+      }, err => {
+        this.notificationService.showError("Error consulta serie. Intentallo más tarde");
+        this.productosDataAdicional[idProductoTemp].validado = false;
+      })
+    }
+    
+  }
+
+  validadarTodosvalidos(): boolean {
+    return this.productosDataAdicional.some(dataRespuesta => dataRespuesta.validado == false);
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.dataSource.data);
+  }
+
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
 }

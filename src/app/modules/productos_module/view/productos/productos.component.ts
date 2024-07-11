@@ -76,7 +76,6 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
         this.notificationService.showSuccess('No se encontraron productos');
       }
     }, (err) => {
-      debugger;
       if (err.error.codigo == '404') {
         this.notificationService.showError('No se encontraron productos');
       }
@@ -89,7 +88,6 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
   obtenerCategoria() {
     this._productosService.obtenerCategoria().subscribe(data => {
       this.categorias = [...data];
-      debugger;
     }, err => {
       this.notificationService.showError('¡Ocurrió un error al obtener las categorias!');
     });
@@ -98,7 +96,6 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
   obtenerEstados() {
     this._productosService.obtenerEstados().subscribe(data => {
       this.estados = [...data];
-      debugger;
     }, err => {
       this.notificationService.showError('¡Ocurrió un error al obtener las categorias!');
     });
@@ -197,7 +194,6 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
     this.viewEditar = true;
     this.id_temporal_producto = id;
     const dataTemp : ItemsResponse = this.PRODUCTOS_DATA.find(data => data.idProducto == id)!;
-    debugger;
     this.productoFormGroup.patchValue({
       codigo: String(dataTemp.codigoProducto),
       modelo: String(dataTemp.modelo),

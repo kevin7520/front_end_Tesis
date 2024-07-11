@@ -51,8 +51,58 @@
           </mat-paginator>
         </div>
       </div>
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    
+      <ng-container *ngIf="tipo == 2">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        
+           <ng-container matColumnDef="seleccion">
+             <th mat-header-cell *matHeaderCellDef>
+               <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
+                 [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+               </mat-checkbox>
+             </th>
+             <td mat-cell *matCellDef="let row">
+               <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                 [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+               </mat-checkbox>
+             </td>
+           </ng-container>
+        
+          <ng-container matColumnDef="id_producto">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.idProducto}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="categoria">
+            <th mat-header-cell *matHeaderCellDef> Categoria </th>
+            <td mat-cell *matCellDef="let element"> {{element.categoria.nombreCategoria}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="codigo_producto">
+            <th mat-header-cell *matHeaderCellDef> Código </th>
+            <td mat-cell *matCellDef="let element"> {{element.codigoProducto}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="modelo">
+            <th mat-header-cell *matHeaderCellDef> Modelo </th>
+            <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="estado_producto">
+            <th mat-header-cell *matHeaderCellDef> Estado </th>
+            <td mat-cell *matCellDef="let element"> {{element.estadoProducto.nombreEstadoProducto}} </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+        </table>
+        <div class="w-full mt-4 mb-4 flex flex-wrap justify-content-center">
+          <button type="button" mat-raised-button [ngClass]="{'opacity-50': selection.selected.length == 0}"
+            [disabled]="selection.selected.length == 0" class="bg-primary"
+            (click)="elegirVariosProductos()">Guardar</button>
+        </div>
+      </ng-container>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="tipo == 1">
+
         <ng-container matColumnDef="id_producto">
           <th mat-header-cell *matHeaderCellDef> ID </th>
           <td mat-cell *matCellDef="let element"> {{element.idProducto}} </td>
@@ -105,17 +155,21 @@
         <div class="col">
           <mat-form-field style="width: 100%;">
             <mat-label>Serie del producto</mat-label>
-            <input [(ngModel)]="producto.serie" matInput>
+            <input [disabled]="producto.validado" [(ngModel)]="producto.serie" matInput>
           </mat-form-field>
         </div>
         <div class="w-max flex flex-wrap justify-content-end align-content-center gap-4">
           <button type="button" mat-raised-button
             [ngClass]="{'opacity-50': producto.valor == 0 || producto.serie == ''}"
-            [disabled]="producto.valor == 0 || producto.serie == ''"
-            class="bg-primary"
-            (click)="guardarProductos()">Guardar</button>
+            [disabled]="producto.valor == 0 || producto.serie == '' || producto.validado"
+            (click)="verificarProducto(producto.idProducto, producto.serie)"
+            class="bg-green-800 text-white">{{(producto.validado) ? 'Validado' : 'Validar'}}</button>
         </div>
       </div>
     </ng-container>
+    <div class="w-full flex flex-wrap justify-content-center my-4">
+      <button type="button" mat-raised-button [ngClass]="{'opacity-50': validadarTodosvalidos()}" [disabled]="validadarTodosvalidos()" class="bg-primary"
+        (click)="guardarProductos()">Guardar</button>
+    </div>
   </ng-container>
 </div>

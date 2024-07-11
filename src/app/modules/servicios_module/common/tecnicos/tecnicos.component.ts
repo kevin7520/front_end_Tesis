@@ -15,11 +15,13 @@ import { CrearHorarioRequest } from '../../models/request/crearHorario';
 import { Event } from '@angular/router';
 import { EditarServicioRequest } from '../../models/request/editarServicioRequest';
 import { Servicios } from '../../models/servicio.mode';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-tecnicos',
   templateUrl: './tecnicos.component.html',
-  styleUrls: ['./tecnicos.component.scss']
+  styleUrls: ['./tecnicos.component.scss'],
+  providers: [DatePipe]
 })
 export class TecnicosComponent implements OnInit, AfterViewInit {
 
@@ -29,7 +31,7 @@ export class TecnicosComponent implements OnInit, AfterViewInit {
   @Input() servicio!: Servicios;
   @ViewChild(MatStepper) stepper!: MatStepper;
   tecnicos: tecnicos[] = [];
-  constructor(private _ServiciosService: ServiciosService, private notificationService: NotificationService) { }
+  constructor(private _ServiciosService: ServiciosService, private notificationService: NotificationService, private datePipe: DatePipe) { }
 
   fechaActual = new Date();
   displayedColumns: string[] = 
@@ -42,6 +44,8 @@ export class TecnicosComponent implements OnInit, AfterViewInit {
     ];
   
   tipoCliente: number = 1;
+
+  tipoProducto: number = 1;
 
   ciudades: CiudadModel[] = [];
 
@@ -101,6 +105,9 @@ export class TecnicosComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.obtenerCiudades();
     this.obtenerTecnicos();
+    if (this.servicio.tipoServicio.idTipoServicio == 3 || this.servicio.tipoServicio.idTipoServicio == 4 || this.servicio.tipoServicio.idTipoServicio == 5) {
+      this.tipoProducto = 2;
+    }
   }
 
   ngAfterViewInit() {
@@ -227,7 +234,9 @@ export class TecnicosComponent implements OnInit, AfterViewInit {
 
   bloquearHorario(horaInicio: string) : boolean {
     let validador = false;
-    const fechaRemp = this.horariosOcupados.filter(data => this.sonFechasIguales(this.horarioFormGroup.value.fecha!, new Date(data.fecha)));
+    debugger;
+    const fechaInputTemp = new Date(this.datePipe.transform(this.horarioFormGroup.value.fecha!, 'MMM d, yyyy')!)
+    const fechaRemp = this.horariosOcupados.filter(data => this.sonFechasIguales(fechaInputTemp, new Date(data.fecha)));
     if (fechaRemp.length > 0 && fechaRemp.some(data => data.horaInicio == horaInicio)) {
       return true;
     }
@@ -241,7 +250,6 @@ export class TecnicosComponent implements OnInit, AfterViewInit {
   };
 
   onSelectionChange(event: any, stepper: MatStepper) {
-    debugger;
     if (event.selectedIndex < stepper.selectedIndex) {
       // Prevenir ir hacia atrás
       this.stepper.selectedIndex = stepper.selectedIndex;
@@ -255,7 +263,7 @@ export class TecnicosComponent implements OnInit, AfterViewInit {
     const horario = this.timeSlots.find(data => data.id == this.horarioFormGroup.value.horario);
     const criteria: CrearHorarioRequest = {
       idTecnico: this.tecnico.idTecnico,
-      fecha: this.horarioFormGroup.value.fecha!,
+      fecha: new Date(this.datePipe.transform(this.horarioFormGroup.value.fecha!, 'MMM d, yyyy')!),
       horaInicio: horario?.horaInicio!,
       horaFin: horario?.horaFin!,
     }

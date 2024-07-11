@@ -27,7 +27,6 @@ export class InicioComponent implements OnInit {
 
   llenarMenu() {
     const Rol = localStorage.getItem('id_rol');
-      debugger;
       if (Rol == 'Admin') {
         this.menu_items = [
           {

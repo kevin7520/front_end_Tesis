@@ -101,6 +101,12 @@ constructor(private http: HttpClient) { }
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.http.get<EstadoServicioResponse>(`${this.uri}/Servicio/EstadosServicios`, { headers });
   }
+
+  verificarSerie(serie: string) : Observable<any> {
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<EstadoServicioResponse>(`${this.uri}/Servicio/Serie/Validador/${serie}`, { headers });
+  }
   
   
   

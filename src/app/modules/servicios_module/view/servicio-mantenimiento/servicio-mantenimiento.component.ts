@@ -1,27 +1,26 @@
 import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { ServiciosService } from '../../services/servicios.service';
-import { NotificationService } from 'src/app/shared/services/notificacion.service';
-import { tecnicos } from '../../models/tecnico.model';
-import { CrearServiciosRequest } from '../../models/request/crearServiciosRequest';
-import { ObtenerServicios } from '../../models/response/obtenerServicio';
-import { Servicios } from '../../models/servicio.mode';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { Servicios } from '../../models/servicio.mode';
 import { EditarServicioRequest } from '../../models/request/editarServicioRequest';
+import { NotificationService } from 'src/app/shared/services/notificacion.service';
+import { ServiciosService } from '../../services/servicios.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { tecnicos } from '../../models/tecnico.model';
 import { EstadoServicioDto } from '../../models/estadoServicio';
+import { CrearServiciosRequest } from '../../models/request/crearServiciosRequest';
 
 @Component({
-  selector: 'app-servicio-instalacion',
-  templateUrl: './servicio-instalacion.component.html',
-  styleUrls: ['./servicio-instalacion.component.scss']
+  selector: 'app-servicio-mantenimiento',
+  templateUrl: './servicio-mantenimiento.component.html',
+  styleUrls: ['./servicio-mantenimiento.component.scss']
 })
-export class ServicioInstalacionComponent implements OnInit, AfterViewInit  {
+export class ServicioMantenimientoComponent implements OnInit, AfterViewInit  {
 
   viewAgregarCliente: boolean = false;
   @Output() _salirEvent = new EventEmitter();
   constructor(private _service: ServiciosService, private notificationService: NotificationService) { }
 
-  tipoInstalacion: number = 1;
+  tipoInstalacion: number = 4;
   displayedColumns: string[] = 
     [
     'numero_solicitud', 
@@ -115,7 +114,7 @@ export class ServicioInstalacionComponent implements OnInit, AfterViewInit  {
   }
 
   ObtenerServicios() {
-    this._service.obtenerServicios().subscribe(dataResponse => {
+    this._service.obtenerServicios().subscribe((dataResponse: { codigo: string; data: any[]; }) => {
       if (dataResponse.codigo == "200") {
         this.servicios = [...dataResponse.data.filter(data=> data.tipoServicio.idTipoServicio == this.tipoInstalacion)];
         this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
@@ -152,7 +151,7 @@ export class ServicioInstalacionComponent implements OnInit, AfterViewInit  {
       }),
       fechaTentativaAtencion: servicioEliminar.fechaSolicitudServicio
     };
-    this._service.editarServicio(criteria, servicioEliminar.idServicio).subscribe(DataResponse => {
+    this._service.editarServicio(criteria, servicioEliminar.idServicio).subscribe((DataResponse: { codigo: string; }) => {
       if (DataResponse.codigo == "200") {
         this.notificationService.showSuccess("Se cambio de estado cerrado correctamente");
         this.ObtenerServicios();
@@ -196,7 +195,6 @@ export class ServicioInstalacionComponent implements OnInit, AfterViewInit  {
     this.ObtenerServicios();
     this.numeroPaso = 1;
   }
-
 
 
 }

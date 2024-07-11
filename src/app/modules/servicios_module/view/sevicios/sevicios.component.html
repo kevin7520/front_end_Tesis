@@ -30,7 +30,15 @@
         <app-servicio-instalacion (_salirEvent)="salirMenu()"></app-servicio-instalacion>
       </div>
     </ng-container>
-    <ng-container *ngIf="mesaTrabajoSeleccionada == 2">dd</ng-container>
-    <ng-container *ngIf="mesaTrabajoSeleccionada == 3">ff</ng-container>
+    <ng-container *ngIf="mesaTrabajoSeleccionada == 2">
+      <div class="w-full">
+        <app-servicio-mantenimiento (_salirEvent)="salirMenu()"></app-servicio-mantenimiento>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="mesaTrabajoSeleccionada == 3">
+      <div class="w-full">
+        <app-servicio-garantia (_salirEvent)="salirMenu()"></app-servicio-garantia>
+      </div>
+    </ng-container>
   </ng-template>
 </div>

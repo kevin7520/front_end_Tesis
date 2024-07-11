@@ -167,7 +167,7 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Producto</ng-template>
-      <app-productos (guardasProductos)="editarServicioProductos($event)"></app-productos>
+      <app-productos [tipo]="tipoProducto" (guardasProductos)="editarServicioProductos($event)"></app-productos>
     </mat-step>
   </mat-stepper>
 </div>
