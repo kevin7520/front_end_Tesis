@@ -1,0 +1,107 @@
+<div class="w-full">
+  <p class="text-center text-xl">Lista de Repuestos</p>
+  <ng-container *ngIf="MostrarTabla">
+    <div class="mt-4 w-full border-solid border-1 border-round-md border-300">
+      <div class="w-full surface-100 p-2 border-round-md border-noround-bottom">
+        <p class="text-lg">Buscar por</p>
+      </div>
+      <div class="grid my-2 px-2">
+        <div class="col">
+          <mat-form-field style="width: 100%;">
+            <mat-label>Código repuesto</mat-label>
+            <input [(ngModel)]="codigo" matInput>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;">
+            <mat-label>Nombre repuesto</mat-label>
+            <input [(ngModel)]="nombre" matInput>
+          </mat-form-field>
+        </div>
+        <div class="col-12 flex flex-wrap justify-content-center gap-4">
+          <button mat-raised-button color="danger">Borrar</button>
+          <button mat-raised-button class="bg-primary">Filtrar</button>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 w-full">
+      <div class="w-full grid m-0">
+        <div class="col p-0">
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+          </mat-paginator>
+        </div>
+      </div>
+      <ng-container>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+          <ng-container matColumnDef="seleccion">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.idRepuesto}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="codigo">
+            <th mat-header-cell *matHeaderCellDef> Código </th>
+            <td mat-cell *matCellDef="let element"> {{element.codigoRepuesto}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombreRepuesto}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef> Precio </th>
+            <td mat-cell *matCellDef="let element"> {{element.precio | currency}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div class="col-12 flex flex-wrap justify-content-center mt-4">
+          <div class="w-max flex">
+            <!-- <mat-form-field style="width: 100%;">
+              <mat-label>Valor del servicio</mat-label>
+              <input type="text" (input)="onPriceInput($event)" [(ngModel)]="precio" matInput>
+            </mat-form-field> -->
+            <button type="button" mat-raised-button [ngClass]="{'opacity-50': selection.selected.length == 0}"
+              [disabled]="selection.selected.length == 0" class="bg-primary" (click)="ingresarValor = true">Guardar</button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</div>
+
+<app-modal [width]="'500px'" *ngIf="ingresarValor" titulo="Ingresa el valor del servicio">
+  <div app-content class="w-12 flex flex-wrap justify-content-center">
+      <div class="col-7 py-0">
+        <mat-form-field style="width: 100%;">
+          <mat-label>Valor del servicio</mat-label>
+          <input type="text" (input)="onPriceInput($event)" [(ngModel)]="precio" matInput>
+        </mat-form-field>
+      </div>
+  </div>
+  <div app-footer class="w-full flex justify-content-center">
+    <div class="w-max flex gap-3">
+      <button mat-raised-button color="danger" (click)="ingresarValor = false">Cancelar</button>
+
+      <button mat-raised-button [ngClass]="{'opacity-50': precio == ''}"
+        [disabled]="precio == ''" class="bg-primary" (click)="guardar()">Continuar</button>
+    </div>
+  </div>
+</app-modal>

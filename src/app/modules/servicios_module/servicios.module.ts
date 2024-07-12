@@ -9,6 +9,7 @@ import { TecnicosComponent } from './common/tecnicos/tecnicos.component';
 import { ProductosComponent } from './common/productos/productos.component';
 import { ServicioMantenimientoComponent } from './view/servicio-mantenimiento/servicio-mantenimiento.component';
 import { ServicioGarantiaComponent } from './view/servicio-garantia/servicio-garantia.component';
+import { RespuestosComponent } from './common/respuestos/respuestos.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { ServicioGarantiaComponent } from './view/servicio-garantia/servicio-gar
     TecnicosComponent,
     ProductosComponent,
     ServicioMantenimientoComponent,
-    ServicioGarantiaComponent
+    ServicioGarantiaComponent,
+    RespuestosComponent
   ]
 })
 export class ServciosModule { }

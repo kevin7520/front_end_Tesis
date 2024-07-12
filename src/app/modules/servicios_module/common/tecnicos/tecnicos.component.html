@@ -167,7 +167,11 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Producto</ng-template>
-      <app-productos [tipo]="tipoProducto" (guardasProductos)="editarServicioProductos($event)"></app-productos>
+      <app-productos [tipoServocio]="servicio.tipoServicio.idTipoServicio" [tipo]="tipoProducto" (guardasProductos)="editarServicioProductos($event,stepper)"></app-productos>
+    </mat-step>
+    <mat-step *ngIf="servicio.tipoServicio.idTipoServicio == 5">
+      <ng-template matStepLabel>Repuestos</ng-template>
+      <app-respuestos (guardarPrecioRespuesto)="editarProductov2($event)"></app-respuestos>
     </mat-step>
   </mat-stepper>
 </div>

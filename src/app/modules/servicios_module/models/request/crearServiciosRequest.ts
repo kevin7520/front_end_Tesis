@@ -3,6 +3,7 @@ export interface CrearServiciosRequest {
         idTecnico: null
         idTipoServicio: number
         idEstadoServicio: number
+        valor: number
         fechaTentativaAtencion: Date
         productos: []
 }

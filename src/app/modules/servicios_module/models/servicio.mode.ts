@@ -18,4 +18,5 @@ export interface Servicios {
   factura: any
   estadoServicioDto: EstadoServicioDto
   horarios: Horario[]
+  valor: number
 }

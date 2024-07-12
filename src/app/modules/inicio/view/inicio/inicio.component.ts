@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, Event } from '@angular/router';
 import { filter } from 'rxjs';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-inicio',
@@ -9,12 +10,14 @@ import { filter } from 'rxjs';
 })
 export class InicioComponent implements OnInit {
 
-  constructor( private _router : Router) { }
+  constructor( private _router : Router, private _usuarioService: UsuarioService) { }
 
   menu_active: boolean = true;
+  nombreUsuario: string = "";
 
   menu_items: any[] = []
   ngOnInit() {
+    this.obtenerUsuario();
     this.llenarMenu();
     this.activarMenu(this._router.url);
     this._router.events
@@ -119,6 +122,15 @@ export class InicioComponent implements OnInit {
       localStorage.clear();
     }
     this._router.navigateByUrl(ruta);
+  }
+
+  obtenerUsuario() {
+    const Rol = localStorage.getItem('id_rol');
+    this._usuarioService.getDatos((Rol == 'Admin' ? 1 : 2)).subscribe(dataResponse => {
+      if (dataResponse.codigo == "200") {
+        this.nombreUsuario = dataResponse.data.nombres;
+      }
+    })
   }
 
 }

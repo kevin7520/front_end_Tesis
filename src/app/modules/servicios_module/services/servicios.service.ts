@@ -18,6 +18,7 @@ import { EditarServicioRequest } from '../models/request/editarServicioRequest';
 import { editarServcioResponse } from '../models/response/editarServicioResponse';
 import { ConectarHorarioServicio } from '../models/request/conectarHorarioServicio';
 import { EstadoServicioResponse } from '../models/response/estadiServicioResponse';
+import { RespuestasResponse } from '../models/response/respuestosResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -106,6 +107,12 @@ constructor(private http: HttpClient) { }
       const token = localStorage.getItem('token');
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.http.get<EstadoServicioResponse>(`${this.uri}/Servicio/Serie/Validador/${serie}`, { headers });
+  }
+
+  cargarRespuestos() : Observable<RespuestasResponse>{
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<RespuestasResponse>(`${this.uri}/Producto/Repuestos`, { headers });   
   }
   
   

@@ -24,6 +24,7 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
 
   @Output() guardasProductos = new EventEmitter;
   @Input() tipo = 1;
+  @Input() tipoServocio = 1;
 
   constructor(private _productosService : ProductosService, private notificationService: NotificationService, private serviciosService: ServiciosService) { }
   displayedColumns: string[] = 
@@ -157,14 +158,14 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
       idProducto: data.idProducto,
       nombreProducto: data.modelo,
       valor: 0,
-      serie: ""
+      serie: "",
+      validado: false,
     });
   }
 
   elegirVariosProductos() {
      this.productosDataAdicional = [];
     this.productosDataAdicional = [];
-    debugger;
     this.selection.selected.forEach(dataArray => {
       const data : ItemsResponse = this.PRODUCTOS_DATA.find(data => data.idProducto == dataArray.idProducto)!;
       this.productosSeleccionados.push(data);
@@ -173,12 +174,27 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
         idProducto: data.idProducto,
         nombreProducto: data.modelo,
         validado: false,
-        valor: 0,
+        valor: "",
+        valorAnterior: "",
         serie: ""
       });
-    })
+    })  
+  }
 
-    
+  onPriceInput(event: Event, index: number): void {
+    let input = (event.target as HTMLInputElement).value;
+
+    // Expresión regular para validar el formato
+    const pattern = /^\d+([.]\d{0,2})?$/;
+
+    if (pattern.test(input) || input === '') {
+      this.productosDataAdicional[index].valor = input;
+
+      this.productosDataAdicional[index].valorAnterior = this.productosDataAdicional[index].valor;
+    } else {
+      // Si el input no es válido, revertir al valor previo
+      (event.target as HTMLInputElement).value = this.productosDataAdicional[index].valorAnterior;
+    }
   }
 
   guardarProductos() {

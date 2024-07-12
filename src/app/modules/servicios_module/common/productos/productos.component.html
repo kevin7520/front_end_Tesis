@@ -143,19 +143,19 @@
     </div>
   </ng-container>
   <ng-container *ngIf="!elegitProducto">
-    <ng-container *ngFor="let producto of productosDataAdicional">
+    <ng-container *ngFor="let producto of productosDataAdicional; let i = index">
       <p class="mt-4 mb-4">Producto seleccionado: {{producto.nombreProducto}}</p>
       <div class="w-full grid">
         <div class="col">
           <mat-form-field style="width: 100%;">
             <mat-label>Valor del producto</mat-label>
-            <input [(ngModel)]="producto.valor" matInput>
+            <input type="text" [(ngModel)]="producto.valor" (input)="onPriceInput($event,i)" matInput>
           </mat-form-field>
         </div>
         <div class="col">
           <mat-form-field style="width: 100%;">
             <mat-label>Serie del producto</mat-label>
-            <input [disabled]="producto.validado" [(ngModel)]="producto.serie" matInput>
+            <input type="text" [disabled]="producto.validado" [(ngModel)]="producto.serie" matInput>
           </mat-form-field>
         </div>
         <div class="w-max flex flex-wrap justify-content-end align-content-center gap-4">

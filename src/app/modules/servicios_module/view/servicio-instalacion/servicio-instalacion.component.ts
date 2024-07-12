@@ -98,6 +98,7 @@ export class ServicioInstalacionComponent implements OnInit, AfterViewInit  {
       idTipoServicio: this.tipoInstalacion,
       idEstadoServicio: 1,
       fechaTentativaAtencion: new Date(),
+      valor: 0,
       productos: []
     }
     this._service.crearServicio(criteria).subscribe(dataResponse => {
@@ -143,6 +144,7 @@ export class ServicioInstalacionComponent implements OnInit, AfterViewInit  {
       idTecnico: servicioEliminar.tecnico?.idTecnico!,
       idTipoServicio: servicioEliminar.tipoServicio.idTipoServicio,
       idEstadoServicio: 4,
+      valor: servicioEliminar.valor,
       productos: servicioEliminar.productos.map(data => {
         return {
             idProducto: data.idProducto,
@@ -150,6 +152,7 @@ export class ServicioInstalacionComponent implements OnInit, AfterViewInit  {
             serie: data.serie
         }
       }),
+      repuestoDto: servicioEliminar.repuestos,
       fechaTentativaAtencion: servicioEliminar.fechaSolicitudServicio
     };
     this._service.editarServicio(criteria, servicioEliminar.idServicio).subscribe(DataResponse => {
