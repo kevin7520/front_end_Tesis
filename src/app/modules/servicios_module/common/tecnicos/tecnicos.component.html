@@ -2,7 +2,7 @@
   <p class="text-center text-xl mt-2 mb-5">Datos del tecnico</p>
 
   <mat-stepper [linear]="true" #stepper (selectionChange)="onSelectionChange($event,stepper)">
-    <mat-step [editable]="editable" [completed]="validadorComplete">
+    <mat-step [editable]="false" [completed]="validadorComplete">
       <ng-template matStepLabel>Datos del tècnico</ng-template>
         <div class="w-full m-0 grid gap-5">
           <p class="text-lg w-max" style="margin-top: 6.5px;">Elige una opción: </p>
@@ -135,7 +135,7 @@
           </div>
         </ng-container>
     </mat-step>
-    <mat-step [editable]="editable" [completed]="validadorComplete2">
+    <mat-step [editable]="false" [completed]="validadorComplete2">
       <ng-template matStepLabel>Horarios</ng-template>
       <p>Elige el horario de atención</p>
       <form action="" [formGroup]="horarioFormGroup" style="box-sizing: border-box;" class="grid w-full p-3 m-0">
@@ -165,11 +165,15 @@
           [disabled]="horarioFormGroup.invalid || horarioFormGroup.value.horario! == 0" class="bg-primary" (click)="crearHorarios(stepper)">Aceptar</button>
       </div>
     </mat-step>
-    <mat-step>
+    <mat-step [editable]="false">
       <ng-template matStepLabel>Producto</ng-template>
       <app-productos [tipoServocio]="servicio.tipoServicio.idTipoServicio" [tipo]="tipoProducto" (guardasProductos)="editarServicioProductos($event,stepper)"></app-productos>
     </mat-step>
-    <mat-step *ngIf="servicio.tipoServicio.idTipoServicio == 5">
+    <mat-step [editable]="false" *ngIf="servicio.tipoServicio.idTipoServicio == 3">
+      <ng-template matStepLabel>Datos de factura</ng-template>
+      <app-factura (guardarFactura)="editarProductov3($event)"></app-factura>
+    </mat-step>
+    <mat-step [editable]="false" *ngIf="servicio.tipoServicio.idTipoServicio == 5">
       <ng-template matStepLabel>Repuestos</ng-template>
       <app-respuestos (guardarPrecioRespuesto)="editarProductov2($event)"></app-respuestos>
     </mat-step>

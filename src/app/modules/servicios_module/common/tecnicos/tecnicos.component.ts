@@ -330,6 +330,32 @@ export class TecnicosComponent implements OnInit, AfterViewInit {
     });
   }
 
+  editarProductov3(event: any) {
+    const criteria: EditarServicioRequest = {
+      idCliente: this.servicio.cliente.idCliente,
+      idTecnico: this.tecnico.idTecnico,
+      idTipoServicio: this.servicio.tipoServicio.idTipoServicio,
+      idEstadoServicio: 3,
+      productos: this.productoSeleccionado,
+      repuestoDto: [],
+      idAlmacen: event.idAlmacen,
+      idFactura: event.idFactura,
+      valor: parseFloat(Number(event.valor).toFixed(2)),
+      fechaTentativaAtencion: this.servicio.fechaSolicitudServicio
+    };
+    this._ServiciosService.editarServicio(criteria, this.servicio.idServicio).subscribe(dataResposne => {
+      if (dataResposne.codigo == "200") {
+        this.notificationService.showSuccess("Servicio actualizado correctamente con estado pendiente");
+        this.salirEvent.emit();
+      }
+      else {
+        this.notificationService.showError("Servicio un error al actualizar el servicio")
+      }
+    }, err => {
+      this.notificationService.showError("Servicio un error al actualizar el servicio. Intentalo más tarde")
+    });
+  }
+
   editarProductoV1(event: any) {
     const criteria: EditarServicioRequest = {
       idCliente: this.servicio.cliente.idCliente,

@@ -10,6 +10,7 @@ import { ProductosComponent } from './common/productos/productos.component';
 import { ServicioMantenimientoComponent } from './view/servicio-mantenimiento/servicio-mantenimiento.component';
 import { ServicioGarantiaComponent } from './view/servicio-garantia/servicio-garantia.component';
 import { RespuestosComponent } from './common/respuestos/respuestos.component';
+import { FacturaComponent } from './common/factura/factura.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { RespuestosComponent } from './common/respuestos/respuestos.component';
     ProductosComponent,
     ServicioMantenimientoComponent,
     ServicioGarantiaComponent,
-    RespuestosComponent
+    RespuestosComponent,
+    FacturaComponent
   ]
 })
 export class ServciosModule { }

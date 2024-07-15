@@ -6,7 +6,9 @@ export interface EditarServicioRequest {
   fechaTentativaAtencion: string,
   valor: number,
   productos: DataProducto[]
-  repuestoDto: DataRepuesto[]
+  repuestoDto: DataRepuesto[],
+  idAlmacen?: number
+  idFactura?: number
 }
 
 export interface DataProducto {

@@ -19,6 +19,9 @@ import { editarServcioResponse } from '../models/response/editarServicioResponse
 import { ConectarHorarioServicio } from '../models/request/conectarHorarioServicio';
 import { EstadoServicioResponse } from '../models/response/estadiServicioResponse';
 import { RespuestasResponse } from '../models/response/respuestosResponse';
+import { crearFacturaRequest } from '../models/request/crearFacturaRequest';
+import { FacturaResponse } from '../models/response/crearFacturaResponse';
+import { AlmacenesResposne } from '../models/response/obtenerAlmacenes';
 
 @Injectable({
   providedIn: 'root'
@@ -84,6 +87,12 @@ constructor(private http: HttpClient) { }
     return this.http.post<any>(`${this.uri}/Servicio/AsignarHorarioTecnico`,criteria, { headers });
   }
 
+  crearFactura(criteria:crearFacturaRequest): Observable<FacturaResponse> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<FacturaResponse>(`${this.uri}/Servicio/factura`,criteria, { headers });
+  }
+
 
   editarServicio(criteria: EditarServicioRequest, id: number) : Observable<editarServcioResponse> {
     const token = localStorage.getItem('token');
@@ -113,6 +122,12 @@ constructor(private http: HttpClient) { }
       const token = localStorage.getItem('token');
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.http.get<RespuestasResponse>(`${this.uri}/Producto/Repuestos`, { headers });   
+  }
+
+  obtenerAlmacenes() : Observable<AlmacenesResposne>{
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<AlmacenesResposne>(`${this.uri}/Servicio/almacenes`, { headers });   
   }
   
   

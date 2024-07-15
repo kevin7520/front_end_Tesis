@@ -1,0 +1,33 @@
+<div class="w-full">
+  <p class="text-center text-xl">Datos de la factura</p>
+    <div class="mt-4 w-full border-solid border-1 border-round-md border-300">
+      <div class="grid my-2 px-2">
+        <div class="col">
+          <mat-form-field style="width: 100%;">
+            <mat-label>Selecciona un almacen</mat-label>
+            <mat-select [(ngModel)]="almacen">
+              <ng-container *ngFor="let almacen of almacenes;">
+                <mat-option [value]="almacen.idAlmacen">{{almacen.nombreAlmacen}}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;">
+            <mat-label>Fecha compra</mat-label>
+            <input [readonly]="true" [(ngModel)]="fechaCompra"  matInput>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;">
+            <mat-label>Número factura</mat-label>
+            <input [readonly]="true" [(ngModel)]="numeroFactura" matInput>
+          </mat-form-field>
+        </div>
+        <div class="col-12 flex flex-wrap justify-content-center gap-4">
+          <button mat-raised-button [ngClass]="{'opacity-50': almacen == 0}"
+            [disabled]="almacen == 0" class="bg-primary" (click)="guardarFacturaMetodo()">Guardar</button>
+        </div>
+      </div>
+    </div>
+</div>

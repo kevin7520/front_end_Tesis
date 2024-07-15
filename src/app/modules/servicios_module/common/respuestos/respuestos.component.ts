@@ -116,4 +116,23 @@ export class RespuestosComponent implements OnInit, AfterViewInit {
     }
   }
 
+  filtrar() {
+    let dataTemp = [...this.respuestos];
+    if (this.codigo != "") {
+      dataTemp = dataTemp.filter(data=> data.codigoRepuesto.toString().toLowerCase().includes(this.codigo) )
+    }
+    if (this.nombre != "") {
+      dataTemp = dataTemp.filter(data=> data.nombreRepuesto.toLowerCase().includes(this.nombre) )
+    }
+    this.dataSource = new MatTableDataSource<Respuestos>(dataTemp);
+    this.dataSource.paginator = this.paginator;
+   }
+  
+  borrarFiltro() {
+    this.codigo = "";
+    this.nombre = "";
+    this.dataSource = new MatTableDataSource<Respuestos>(this.respuestos);
+    this.dataSource.paginator = this.paginator;
+  }
+
 }
