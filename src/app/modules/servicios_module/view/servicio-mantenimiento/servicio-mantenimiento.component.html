@@ -93,9 +93,9 @@
            <th mat-header-cell *matHeaderCellDef> Acciones </th>
            <td mat-cell *matCellDef="let element">
              <div class="w-full flex flex-wrap justify-content-center gap-3">
-               <i *ngIf="element.estadoServicioDto.idEstadoServicio < 3" class="bi bi-pencil-square cursor-pointer"
+               <i matTooltip="Editar servicio" *ngIf="element.estadoServicioDto.idEstadoServicio < 3" class="bi bi-pencil-square cursor-pointer"
                  (click)="editarServicio(element.idServicio)"></i>
-               <i *ngIf="element.estadoServicioDto.idEstadoServicio != 4" class="bi bi-file-lock2-fill cursor-pointer"
+               <i matTooltip="Cerrar servicio" *ngIf="element.estadoServicioDto.idEstadoServicio != 4" class="bi bi-file-lock2-fill cursor-pointer"
                  (click)="eliminarServicioCambiarEstado(element.idServicio)"></i>
              </div>
            </td>
