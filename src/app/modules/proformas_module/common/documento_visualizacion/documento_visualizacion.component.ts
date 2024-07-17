@@ -45,8 +45,8 @@ export class  Documento_visualizacionComponent implements OnInit {
       if (dataRespose.codigo == "200" && dataRespose.data.length>0) {
         this.repuestos = dataRespose.data;
         setTimeout(() => {
-          if (this.descargar) {
-          this.descargarmeotodo();
+          if (this.descargar == true) {
+            this.descargarmeotodo();
           }
         }, 1000);
       }

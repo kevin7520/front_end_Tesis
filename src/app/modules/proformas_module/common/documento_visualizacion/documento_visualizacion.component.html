@@ -47,13 +47,13 @@
               <p>{{item.repuesto.nombreRepuesto}}</p>
             </div>
             <div class="col-2 text-center boder_item">
-              <p>{{item.repuesto.precio | currency}}</p>
+              <p>{{item.cantidad}}</p>
             </div>
             <div class="col-2 text-center boder_item">
-              <p>{{item.repuesto.precio*0.15 | currency}}</p>
+              <p>{{item.repuesto.precio | currency}}</p>
             </div>
             <div class="col-2 text-center">
-              <p>{{(item.repuesto.precio+(item.repuesto.precio*0.15)) | currency}}</p>
+              <p>{{(item.repuesto.precio*item.cantidad) | currency}}</p>
             </div>
           </div>
         </ng-container>

@@ -8,17 +8,18 @@
       <div class="col">
         <mat-form-field style="width: 100%;">
           <mat-label>Nombre cliente</mat-label>
-          <input matInput>
+          <input [(ngModel)]="nombre" matInput>
         </mat-form-field>
       </div>
       <div class="col">
         <mat-form-field style="width: 100%;">
           <mat-label>Identificación cliente</mat-label>
-          <input matInput>
+          <input [(ngModel)]="identificacion" matInput>
         </mat-form-field>
       </div> 
-      <div class="w-max col-fixed flex flex-wrap align-content-center">
-        <button mat-raised-button class="bg-primary">Filtrar</button>
+      <div class="col-12 flex flex-wrap justify-content-center gap-4">
+        <button mat-raised-button color="danger" (click)="borrarFiltro()">Borrar</button>
+        <button mat-raised-button class="bg-primary" (click)="filtrar()">Filtrar</button>
       </div>
     </div>
   </div>
@@ -84,7 +85,7 @@
 
 <app-modal [width]="'1100px'" *ngIf="verProforma" titulo="Visualización de la proforma">
   <div app-content class="w-full">
-      <app-documento_visualizacion [id_proforma]="id_proforma" (cerrarDescarga)="verProforma = false; id_proforma = 0;"></app-documento_visualizacion>
+      <app-documento_visualizacion [id_proforma]="id_proforma" [descargar]="false" (cerrarDescarga)="verProforma = false; id_proforma = 0;"></app-documento_visualizacion>
   </div>
   <div app-footer class="w-full flex justify-content-center pr-5">
     <div class="w-max flex gap-3">
@@ -92,7 +93,7 @@
     </div>
   </div>
 </app-modal>
-<div style="width: 900px;" class="mt-8" *ngIf="id_proforma!=0">
+<div style="width: 900px;" class="mt-8" *ngIf="id_proforma!=0 && verProforma == false">
   <app-documento_visualizacion [id_proforma]="id_proforma" [descargar]="true" (cerrarDescarga)="id_proforma = 0;"></app-documento_visualizacion>
 </div>
 <!-- 
