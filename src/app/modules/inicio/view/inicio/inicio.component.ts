@@ -87,13 +87,6 @@ export class InicioComponent implements OnInit {
             active: false
           },
           {
-            titulo: "Pedidos",
-            id: 1,
-            icono: "bi bi-cart-check-fill",
-            ruta: "/inicio/pedidos",
-            active: false
-          },
-          {
             titulo: "Reportes",
             id: 2,
             icono: "bi bi-file-earmark-excel-fill",

@@ -118,7 +118,7 @@
     <div class="col-6">
       <mat-form-field style="width: 100%;" appearance="outline">
         <mat-label>Identificación</mat-label>
-        <input [maxLength]="10" matInput formControlName="cedula">
+        <input [maxLength]="10" (keypress)="blockEvent($event)"  matInput formControlName="cedula">
       </mat-form-field>
     </div>
     <div class="col-6">
@@ -130,7 +130,7 @@
     <div class="col-6">
       <mat-form-field style="width: 100%;" appearance="outline">
         <mat-label>Teléfono</mat-label>
-        <input [maxLength]="10" matInput formControlName="telefono">
+        <input [maxLength]="10" (keypress)="blockEvent($event)"  matInput formControlName="telefono">
       </mat-form-field>
     </div>
     <div class="col-6">
