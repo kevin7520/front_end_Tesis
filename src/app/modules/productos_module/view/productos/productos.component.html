@@ -8,7 +8,7 @@
       <div class="col">
         <mat-form-field style="width: 100%;">
           <mat-label>Selecciona una categoría</mat-label>
-          <mat-select>
+          <mat-select [(ngModel)]="categoria">
             <ng-container *ngFor="let categoria of categorias;">
                 <mat-option [value]="categoria.idCategoria">{{categoria.nombreCategoria}}</mat-option>
             </ng-container>
@@ -18,27 +18,28 @@
       <div class="col">
         <mat-form-field style="width: 100%;">
           <mat-label>Código de producto</mat-label>
-          <input matInput>
+          <input [(ngModel)]="codigo" matInput>
         </mat-form-field>
       </div>
       <div class="col">
         <mat-form-field style="width: 100%;">
           <mat-label>Modelo</mat-label>
-          <input matInput>
+          <input [(ngModel)]="modelo" matInput>
         </mat-form-field>
       </div>
       <div class="col">
         <mat-form-field style="width: 100%;">
           <mat-label>Selecciona un estado</mat-label>
-          <mat-select>
+          <mat-select [(ngModel)]="estado">
             <ng-container *ngFor="let estado of estados;">
               <mat-option [value]="estado.idEstadoProducto">{{estado.nombreEstadoProducto}}</mat-option>
             </ng-container>
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="w-max col-fixed flex flex-wrap align-content-center">
-        <button mat-raised-button class="bg-primary">Filtrar</button>
+      <div class="col-12 flex flex-wrap justify-content-center gap-4">
+        <button mat-raised-button color="danger" (click)="borrarFiltro()">Borrar</button>
+        <button mat-raised-button class="bg-primary" (click)="filtrar()">Filtrar</button>
       </div>
     </div>
   </div>
@@ -127,7 +128,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-12">
+      <div class="col-12 hidden">
         <mat-form-field style="width: 100%;" appearance="outline">
           <mat-label>Estado</mat-label>
           <input [readonly]="true" matInput formControlName="estado">

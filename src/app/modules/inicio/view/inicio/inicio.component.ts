@@ -14,6 +14,7 @@ export class InicioComponent implements OnInit {
 
   menu_active: boolean = true;
   nombreUsuario: string = "";
+  rol = "";
 
   menu_items: any[] = []
   ngOnInit() {
@@ -32,13 +33,6 @@ export class InicioComponent implements OnInit {
     const Rol = localStorage.getItem('id_rol');
       if (Rol == 'Admin') {
         this.menu_items = [
-          {
-            titulo: "Crear Usuario",
-            id: 0,
-            icono: "bi bi-person-fill-add",
-            ruta: "/inicio/crear/usuario",
-            active: false
-          },
           {
             titulo: "Sevicios",
             id: 1,
@@ -85,6 +79,13 @@ export class InicioComponent implements OnInit {
       }
       else {
         this.menu_items = [
+        {
+            titulo: "Crear Usuario",
+            id: 0,
+            icono: "bi bi-person-fill-add",
+            ruta: "/inicio/crear/usuario",
+            active: false
+          },
           {
             titulo: "Pedidos",
             id: 1,
@@ -126,6 +127,7 @@ export class InicioComponent implements OnInit {
 
   obtenerUsuario() {
     const Rol = localStorage.getItem('id_rol');
+    this.rol = Rol!;
     this._usuarioService.getDatos((Rol == 'Admin' ? 1 : 2)).subscribe(dataResponse => {
       if (dataResponse.codigo == "200") {
         this.nombreUsuario = dataResponse.data.nombres;

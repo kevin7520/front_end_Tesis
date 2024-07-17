@@ -212,4 +212,35 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
     this.productoFormGroup.reset();
   }
 
+  codigo: string = "";
+  modelo: string = "";
+  estado: number = 0;
+  categoria: number = 0;
+
+  filtrar() {
+    let dataTemp = [...this.PRODUCTOS_DATA];
+    if (this.codigo != "") {
+      dataTemp = dataTemp.filter(data=> data.codigoProducto.toString().toLowerCase().includes(this.codigo) )
+    }
+    if (this.modelo != "") {
+      dataTemp = dataTemp.filter(data=> data.modelo.toLowerCase().includes(this.modelo) )
+    }
+    if (this.estado != 0) {
+      dataTemp = dataTemp.filter(data=> data.estadoProducto.idEstadoProducto == this.estado )
+    }
+    if (this.estado != 0) {
+      dataTemp = dataTemp.filter(data=> data.categoria.idCategoria == this.categoria )
+    }
+    this.dataSource = new MatTableDataSource<ItemsResponse>(dataTemp);
+    this.dataSource.paginator = this.paginator;
+   }
+  
+  borrarFiltro() {
+    this.codigo = "";
+    this.modelo = "";
+    this.estado = 0;
+    this.categoria = 0;
+    this.dataSource = new MatTableDataSource<ItemsResponse>(this.PRODUCTOS_DATA);
+    this.dataSource.paginator = this.paginator;
+  }
 }

@@ -94,7 +94,7 @@
             </div>
             <div class="col-12 flex justify-content-center mt-4">
               <div class="w-max flex gap-3">
-                <button (click)="cancelar()" mat-raised-button color="warn">Cancelar</button>
+                <button (click)="cancelar()" mat-raised-button>Cancelar</button>
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@
               </div>
               <div class="col-12 flex justify-content-center">
                 <div class="w-max flex gap-3">
-                  <button (click)="cancelar()" mat-raised-button color="warn">Cancelar</button>
+                  <button (click)="cancelar()" mat-raised-button>Cancelar</button>
         
                   <button type="button" mat-raised-button [ngClass]="{'opacity-50': clientesFormGroup.invalid}"
                     [disabled]="clientesFormGroup.invalid" class="bg-primary" (click)="crearTecnico(stepper)">Aceptar</button>
@@ -160,7 +160,7 @@
         </div>
       </form>
       <div class="w-full flex flex-wrap justify-content-center gap-4">
-        <button type="button" (click)="returnAndProceed(stepper)" mat-raised-button color="warn">Regresar</button>
+        <button type="button" (click)="returnAndProceed(stepper)" mat-raised-button>Regresar</button>
         <button type="button" mat-raised-button [ngClass]="{'opacity-50': horarioFormGroup.invalid || horarioFormGroup.value.horario! == 0}"
           [disabled]="horarioFormGroup.invalid || horarioFormGroup.value.horario! == 0" class="bg-primary" (click)="crearHorarios(stepper)">Aceptar</button>
       </div>
