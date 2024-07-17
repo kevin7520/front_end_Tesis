@@ -17,8 +17,10 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatSortModule} from '@angular/material/sort';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   imports: [
@@ -41,7 +43,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatNativeDateModule,
     MatSortModule,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatToolbarModule,
+    MatCardModule
   ],
   declarations: [
     ModalComponent
@@ -66,7 +70,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatNativeDateModule,
     MatSortModule,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatToolbarModule,
+    MatCardModule
   ]
 })
 export class SharedModule { }
