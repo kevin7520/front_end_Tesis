@@ -12,6 +12,8 @@ export class ProformasComponent implements OnInit {
 
   constructor(private proformas : ProformaService) { }
 
+  verProforma: boolean = false;
+  id_proforma = 0;
   displayedColumns: string[] = 
   [
     'idProforma', 
@@ -39,5 +41,14 @@ export class ProformasComponent implements OnInit {
           this.dataSource = new MatTableDataSource<proformaData>(this.PROFORMA_DATA);
       }
     })
+  }
+
+  verProformaMetodo(id: number) {
+    this.id_proforma = id;
+    this.verProforma = true;
+  }
+
+  descargarProformaMetodo(id: number) {
+    this.id_proforma = id;
   }
 }

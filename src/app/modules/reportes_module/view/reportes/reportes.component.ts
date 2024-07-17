@@ -17,7 +17,7 @@ export class ReportesComponent implements OnInit {
 
   displayedColumnsProductos: string[] = ['idProducto', 'nombreCategoria', 'codigoProducto', 'modelo', 'serieProducto', 'estado', 'precio'];
   displayedColumnsServicios: string[] = ['idServicio', 'cliente', 'tipoServicio', 'fechaSolicitudServicio', 'fechaTentativaAtencion', 'estadoServicioDto', 'valor'];
-  displayedColumnsProformas: string[] = ['idProforma', 'nombre', 'identificacion', 'subtotal', 'iva', 'total', 'acciones'];
+  displayedColumnsProformas: string[] = ['idProforma', 'nombre', 'identificacion', 'subtotal', 'iva', 'total'];
 
   constructor( private readonly reportesService: ReportesService, private readonly excelService: ExcelService ) { 
     this.loadProductos();
