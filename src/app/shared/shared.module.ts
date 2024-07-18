@@ -21,10 +21,12 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
     CommonModule,
+    MatDialogModule,
     HttpClientModule,
     MatFormFieldModule,
     FormsModule,
@@ -52,6 +54,7 @@ import { MatCardModule } from '@angular/material/card';
   ],
   exports: [
     ModalComponent,
+    MatDialogModule,
     HttpClientModule,
     MatFormFieldModule,
     FormsModule,
