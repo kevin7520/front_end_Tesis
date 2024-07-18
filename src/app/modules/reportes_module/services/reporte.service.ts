@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ObtenerServicios } from '../models/obtenerServicio';
 import { ObtenerProductos } from '../models/obtenerProducto';
 import { ObtenerProformasResponse } from '../models/obtenerProformasResponse';
+import { Pedido, ResponseGlobal } from '../../pedidos_module/models/pedidos';
 @Injectable({
   providedIn: 'root'
 })
@@ -30,5 +31,11 @@ constructor(private http: HttpClient) { }
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<ObtenerProformasResponse>(`${this.uri}/Proforma`, { headers });
+  }
+
+  obtenerPedidos(): Observable<ResponseGlobal<Pedido[]>> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<ResponseGlobal<Pedido[]>>(`${this.uri}/Pedido`, { headers });
   }
 }
