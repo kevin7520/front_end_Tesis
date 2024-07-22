@@ -1,0 +1,45 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+.container-header {
+  height: 60px;
+  width: 100%;
+}
+.container-header img {
+  width: auto;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+div {
+  box-sizing: border-box;
+}
+
+p {
+  margin: 0;
+}
+
+.mat-mdc-paginator {
+  background-color: transparent !important;
+}
+
+.success-snackbar .mdc-snackbar__surface {
+  background-color: rgba(240, 253, 244, 0.95) !important;
+  border: 1px solid #bbf7d0 !important;
+}
+.success-snackbar .mdc-snackbar__surface .mat-mdc-snack-bar-label .mdc-snackbar__label {
+  color: #16a34a !important;
+  font-weight: 500;
+}
+
+.error-snackbar .mdc-snackbar__surface {
+  background-color: rgba(254, 242, 242, 0.95) !important;
+  border: 1px solid #fecaca !important;
+}
+.error-snackbar .mdc-snackbar__surface .mat-mdc-snack-bar-label .mdc-snackbar__label {
+  color: #dc2626 !important;
+  font-weight: 500;
+}/*# sourceMappingURL=styles.css.map */

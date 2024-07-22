@@ -15,8 +15,9 @@ export class FacturaComponent implements OnInit {
   constructor(private servicio: ServiciosService, private notificationService: NotificationService) { }
 
   almacenes: Almacenes[] = [];
-  fechaCompra = this.fechaComprarFormat();
-  numeroFactura = this.NumeroFacturaFormat();
+  fechaCompra = new Date();
+  minDate = new Date();
+  numeroFactura = "";
   ngOnInit() {
     this.obtenerAlmacenes();
   }
@@ -57,7 +58,7 @@ export class FacturaComponent implements OnInit {
 
   guardarFacturaMetodo() {
     const criteria: crearFacturaRequest = {
-      fechaCompra: new Date(),
+      fechaCompra: this.fechaCompra,
       numeroFactura: this.numeroFactura
     }
     this.servicio.crearFactura(criteria).subscribe(dataresponse => {

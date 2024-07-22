@@ -30,6 +30,8 @@ export class TecnicosComponent implements OnInit, AfterViewInit {
   @Output() salirEvent = new EventEmitter;
   @Input() servicio!: Servicios;
   @ViewChild(MatStepper) stepper!: MatStepper;
+
+  minDate = new Date();
   tecnicos: tecnicos[] = [];
   constructor(private _ServiciosService: ServiciosService, private notificationService: NotificationService, private datePipe: DatePipe) { }
 

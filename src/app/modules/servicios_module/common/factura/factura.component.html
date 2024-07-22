@@ -12,21 +12,30 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col">
+        <!-- <div class="col">
           <mat-form-field style="width: 100%;">
             <mat-label>Fecha compra</mat-label>
             <input [readonly]="true" [(ngModel)]="fechaCompra"  matInput>
+          </mat-form-field>
+        </div> -->
+        <div class="col">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Fecha de instalación</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="fechaCompra" [min]="minDate">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle  matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
         <div class="col">
           <mat-form-field style="width: 100%;">
             <mat-label>Número factura</mat-label>
-            <input [readonly]="true" [(ngModel)]="numeroFactura" matInput>
+            <input [(ngModel)]="numeroFactura" matInput>
           </mat-form-field>
         </div>
         <div class="col-12 flex flex-wrap justify-content-center gap-4">
-          <button mat-raised-button [ngClass]="{'opacity-50': almacen == 0}"
-            [disabled]="almacen == 0" class="bg-primary" (click)="guardarFacturaMetodo()">Guardar</button>
+          <button mat-raised-button [ngClass]="{'opacity-50': almacen == 0 || numeroFactura == ''}"
+            [disabled]="almacen == 0 || numeroFactura == ''" class="bg-primary" (click)="guardarFacturaMetodo()">Guardar</button>
         </div>
       </div>
     </div>
