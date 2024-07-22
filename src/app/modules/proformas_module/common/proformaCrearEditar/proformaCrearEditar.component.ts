@@ -53,7 +53,7 @@ export class ProformaCrearEditarComponent implements OnInit, AfterViewInit {
     this.obtenerClientes();
     if (!this.crearProforma) {
       this.clienteId = this.proformaData.cliente.idCliente;
-
+      this.cargarRepuestoProforma(this.proformaData.idProforma);
     }
   }
 
@@ -65,7 +65,7 @@ export class ProformaCrearEditarComponent implements OnInit, AfterViewInit {
     this.proformaService.getRepuestoProforma(id).subscribe(dataRespose => {
       if (dataRespose.codigo == "200" && dataRespose.data.length>0) {
         this.respuestosNuevos = dataRespose.data.map(data => {
-          const proformaNueva: any = data;
+          const proformaNueva: any = data.repuesto;
           proformaNueva.nuevaCantidad = data.cantidad,
           proformaNueva.precioFinal = data.precioFinal
           return proformaNueva  
@@ -141,13 +141,50 @@ export class ProformaCrearEditarComponent implements OnInit, AfterViewInit {
         }
       })
     }
-    this.proformaService.crearProforma(proforma).subscribe(dataResponse => {
-      this.notificationService.showSuccess("Proforma creada exitosamente");
-      this.creacionEdicion.emit();
-    }, err => {
-      this.notificationService.showError("Hubo error al crear proforma");
-    })
+    if (this.crearProforma) {
+      this.proformaService.crearProforma(proforma).subscribe(dataResponse => {
+        this.notificationService.showSuccess("Proforma creada exitosamente");
+        this.creacionEdicion.emit();
+      }, err => {
+        this.notificationService.showError("Hubo error al crear proforma");
+      })
+    }
+    else {
+        this.proformaService.editarProforma(proforma, this.proformaData.idProforma).subscribe(dataResponse => {
+              if (dataResponse.codigo == "200") {
+                this.notificationService.showSuccess("Proforma editada exitosamente");
+                this.creacionEdicion.emit();
+              }
+              else {
+                this.notificationService.showError("Hubo error al editar la proforma");
+              }
+            }, err => {
+              this.notificationService.showError("Hubo error al editar la proforma");
+            })
+    }
+    
   }
+
+  // EditarProformaMetodo() {
+  //   const proforma: CrearProformaRequest = {
+  //     descripcionProducto: "----",
+  //     subtotal: this.getTotalCostSinIva(),
+  //     iva: this.getIva(),
+  //     total: this.getTotalPrecioIva(),
+  //     idCliente: this.clienteId,
+  //     idEstadoProforma: 1,
+  //     detalles: this.respuestosNuevos.map(data => {
+  //       return {
+  //         idRepuesto: data.idRepuesto,
+  //         cantidad: data.nuevaCantidad,
+  //         descripcionRepuesto: "----",
+  //         precioUnitario: data.precio,
+  //         precioFinal: data.precioFinal
+  //       }
+  //     })
+  //   }
+    
+  // }
 
   eliminarRepuesto(id:number) {
     this.respuestosNuevos.splice(id, 1);
