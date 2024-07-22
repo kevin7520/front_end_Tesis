@@ -4,6 +4,7 @@ import { ProformasComponent } from './view/proformas/proformas.component';
 import { AppRoutingProformasModule } from './proformas-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { Documento_visualizacionComponent } from './common/documento_visualizacion/documento_visualizacion.component';
+import { ProformaCrearEditarComponent } from './common/proformaCrearEditar/proformaCrearEditar.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { Documento_visualizacionComponent } from './common/documento_visualizaci
   ],
   declarations: [
     ProformasComponent,
-    Documento_visualizacionComponent
+    Documento_visualizacionComponent,
+    ProformaCrearEditarComponent
   ]
 })
 export class ProformasModule { }
