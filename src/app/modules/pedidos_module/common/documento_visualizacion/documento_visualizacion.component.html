@@ -1,0 +1,87 @@
+<div class="w-full px-3" id="htmlData" *ngIf="datos != undefined">
+ <div class="w-full p-3">
+   <div class="w-full flex flex-wrap justify-content-end">
+    <img src="assets/images/shared/logo.png" alt="" width="80px">
+   </div>
+   <div class="w-full border-1 border-solid border-300 border-round-sm p-3 mt-4">
+    <p class="bold">Datos del cliente</p>
+    <div class="w-full grid m-0 mt-4">
+     <div class="col-12 p-0 grid m-0">
+       <div class="col">
+         Nombre: {{datos.cliente.nombres}}
+       </div>
+              <div class="col">
+                Correo: {{datos.cliente.correo}}
+              </div>
+       <div class="col">
+         Identificacion: {{datos.cliente.cedula}}
+       </div>
+       <div class="col">
+         Teléfono: {{datos.cliente.telefono}}
+       </div>
+     </div>
+      <div class="col-12 mt-4">
+        Dirrección: {{datos.cliente.direccion}}
+      </div>
+      
+    </div>
+   </div>
+      <div class="w-full mt-4 border-round-sm">
+        <div class="w-full grid m-0 cabezera border border-round-sm border-noround-bottom">
+          <div class="col-6 boder_item">
+            <p>Detalle</p>
+          </div>
+          <div class="col-2 text-center boder_item">
+            <p>Cantidad</p>
+          </div>
+          <div class="col-2 text-center boder_item">
+            <p>Precio</p>
+          </div>
+          <div class="col-2 text-center">
+            <p>Precio total</p>
+          </div>
+        </div>  
+        <ng-container *ngFor="let item of repuestos">
+          <div class="w-full grid m-0 cabezera border">
+            <div class="col-6 boder_item">
+              <p>{{item.repuesto.nombreRepuesto}}</p>
+            </div>
+            <div class="col-2 text-center boder_item">
+              <p>{{item.cantidad}}</p>
+            </div>
+            <div class="col-2 text-center boder_item">
+              <p>{{item.repuesto.precio | currency}}</p>
+            </div>
+            <div class="col-2 text-center">
+              <p>{{(item.repuesto.precio*item.cantidad) | currency}}</p>
+            </div>
+          </div>
+        </ng-container>
+        <div class="w-full grid m-0 cabezera border">
+          <div class="col-10 boder_item">
+            <p class="text-right">SubTotal</p>
+          </div>
+          <div class="col-2 text-center">
+            <p>{{datos.subtotal | currency}}</p>
+          </div>
+        </div>
+        <div class="w-full grid m-0 cabezera border">
+          <div class="col-10 boder_item">
+            <p class="text-right">IVA</p>
+          </div>
+          <div class="col-2 text-center">
+            <p>{{datos.iva | currency}}</p>
+          </div>
+        </div>
+        <div class="w-full grid m-0 cabezera border-2-style">
+          <div class="col-10 boder_item">
+            <p class="text-right">Total</p>
+          </div>
+          <div class="col-2 text-center">
+            <p>{{datos.total | currency}}</p>
+          </div>
+        </div>
+      </div>
+ </div>
+
+</div>

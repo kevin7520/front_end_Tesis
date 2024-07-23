@@ -1,68 +1,111 @@
-<div class="container">
-  <h1 class="mt-4">Lista de pedidos</h1>
-  <button mat-raised-button color="primary" (click)="openDialog()">Agregar pedido</button>
-  <div class="mb-3 mt-3">
-    <mat-form-field appearance="fill" class="mr-3">
-      <mat-label>Filtrar por Cliente</mat-label>
-      <mat-select [(ngModel)]="selectedCliente" (selectionChange)="onClienteChange()">
-        <mat-option [value]="null">Todos</mat-option>
-        <mat-option *ngFor="let cliente of clientes" [value]="cliente.idCliente">
-          {{ cliente.nombres }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Filtrar por Producto</mat-label>
-      <mat-select [(ngModel)]="selectedProducto" (selectionChange)="onProductoChange()">
-        <mat-option [value]="null">Todos</mat-option>
-        <mat-option *ngFor="let producto of productos" [value]="producto.idProducto">
-          {{ producto.modelo }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+<div class="w-full" *ngIf="paso==1">
+  <p class="text-center text-xl">Lista de Pedidos</p>
+  <div class="mt-4 w-full border-solid border-1 border-round-md border-300">
+    <div class="w-full surface-100 p-2 border-round-md border-noround-bottom">
+      <p class="text-lg">Buscar por</p>
+    </div>
+    <div class="grid my-2 px-2">
+      <div class="col">
+        <mat-form-field style="width: 100%;">
+          <mat-label>Nombre cliente</mat-label>
+          <input [(ngModel)]="nombre" matInput>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field style="width: 100%;">
+          <mat-label>Identificación cliente</mat-label>
+          <input [(ngModel)]="identificacion" matInput>
+        </mat-form-field>
+      </div>
+      <div class="col-12 flex flex-wrap justify-content-center gap-4">
+        <button mat-raised-button color="danger" (click)="borrarFiltro()">Borrar</button>
+        <button mat-raised-button class="bg-primary" (click)="filtrar()">Filtrar</button>
+      </div>
+    </div>
   </div>
+  <div class="mt-4 w-full">
+    <div class="w-full grid m-0">
+      <div class="w-max flex align-content-center align-items-center">
+        <button mat-raised-button (click)="paso=2">Agregar Pedidos</button>
+      </div>
+      <div class="col p-0">
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+          aria-label="Select page of periodic elements">
+        </mat-paginator>
+      </div>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let pedido"> {{ pedido.idPedido }} </td>
-    </ng-container>
+      <ng-container matColumnDef="idProforma">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let element; let i = index"> {{element.idPedido}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="cliente">
-      <th mat-header-cell *matHeaderCellDef> Cliente </th>
-      <td mat-cell *matCellDef="let pedido"> {{ pedido.cliente.nombres }} </td>
-    </ng-container>
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> Nombre cliente </th>
+        <td mat-cell *matCellDef="let element"> {{element.cliente.nombres}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="tipo">
-      <th mat-header-cell *matHeaderCellDef> Tipo </th>
-      <td mat-cell *matCellDef="let pedido"> {{ pedido.tipoPedido }} </td>
-    </ng-container>
+      <ng-container matColumnDef="identificacion">
+        <th mat-header-cell *matHeaderCellDef> Identificación cliente </th>
+        <td mat-cell *matCellDef="let element"> {{element.cliente.cedula}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="fecha">
-      <th mat-header-cell *matHeaderCellDef> Fecha </th>
-      <td mat-cell *matCellDef="let pedido"> {{ pedido.fechaPedido | date }} </td>
-    </ng-container>
+      <ng-container matColumnDef="subtotal">
+        <th mat-header-cell *matHeaderCellDef> Subtotal </th>
+        <td mat-cell *matCellDef="let element"> {{element.subtotal | currency}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="producto">
-      <th mat-header-cell *matHeaderCellDef> Producto </th>
-      <td mat-cell *matCellDef="let pedido"> {{ pedido.producto.modelo }} </td>
-    </ng-container>
+      <ng-container matColumnDef="iva">
+        <th mat-header-cell *matHeaderCellDef> Iva </th>
+        <td mat-cell *matCellDef="let element"> {{element.iva | currency}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let pedido">
-        <button mat-icon-button color="primary" (click)="openDialog(pedido)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="eliminarPedido(pedido.idPedido)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef> Total </th>
+        <td mat-cell *matCellDef="let element"> {{element.total | currency}} </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="w-max flex flex-wrap gap-3">
+            <i matTooltip="Editar pedido" class="bi bi-pencil-square cursor-pointer"
+              (click)="editarProforma(element.idPedido)"></i>
+            <i matTooltip="Visualizar pedido" (click)="verProformaMetodo(element.idPedido)"
+              class="bi bi-eye cursor-pointer"></i>
+            <i matTooltip="Descargar pedido" (click)="descargarProformaMetodo(element.idPedido)"
+              class="bi bi-download cursor-pointer"></i>
+          </div>
+        </td>
+      </ng-container>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>
+<div class="w-full" *ngIf="paso==2">
+  <app-pedidoCrearEditar (cancelar)="paso=1" (creacionEdicion)="creacionEdicionProforma()"></app-pedidoCrearEditar>
+</div>
+
+<div class="w-full" *ngIf="paso==3">
+  <app-pedidoCrearEditar (cancelar)="paso=1" (creacionEdicion)="creacionEdicionProforma()"
+    [proformaData]="proformaData!" [crearProforma]="false"></app-pedidoCrearEditar>
+</div>
+
+<app-modal [width]="'1100px'" *ngIf="verProforma" titulo="Visualización del pedido">
+  <div app-content class="w-full">
+    <app-documento_pedido [id_proforma]="id_proforma" [descargar]="false"
+      (cerrarDescarga)="verProforma = false; id_proforma = 0;"></app-documento_pedido>
+  </div>
+  <div app-footer class="w-full flex justify-content-center pr-5">
+    <div class="w-max flex gap-3">
+      <button mat-raised-button class="bg-primary" (click)="verProforma = false; id_proforma = 0;">Aceptar</button>
+    </div>
+  </div>
+</app-modal>
+<div style="width: 900px;" class="mt-8" *ngIf="id_proforma!=0 && verProforma == false">
+  <app-documento_pedido [id_proforma]="id_proforma" [descargar]="true"
+    (cerrarDescarga)="id_proforma = 0;"></app-documento_pedido>
 </div>
