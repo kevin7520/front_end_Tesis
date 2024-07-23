@@ -5,6 +5,8 @@ import { ReportesService } from '../../services/reporte.service';
 import { ExcelService } from '../../services/Excel.service';
 import { proformaData } from '../../models/obtenerProformasResponse';
 import { Pedido } from 'src/app/modules/pedidos_module/models/pedidos';
+import { FormControl, FormGroup } from '@angular/forms';
+import { NotificationService } from 'src/app/shared/services/notificacion.service';
 
 @Component({
   selector: 'app-reportes',
@@ -20,9 +22,9 @@ export class ReportesComponent implements OnInit {
   displayedColumnsProductos: string[] = ['idProducto', 'nombreCategoria', 'codigoProducto', 'modelo', 'serieProducto', 'estado', 'precio'];
   displayedColumnsServicios: string[] = ['idServicio', 'cliente', 'tipoServicio', 'fechaSolicitudServicio', 'fechaTentativaAtencion', 'estadoServicioDto', 'valor'];
   displayedColumnsProformas: string[] = ['idProforma', 'nombre', 'identificacion', 'subtotal', 'iva', 'total'];
-  displayedColumnsPedidos: string[] = ['idPedido', 'cliente', 'tipoPedido', 'fechaPedido', 'producto'];
+  displayedColumnsPedidos: string[] = ['idProforma', 'nombre', 'identificacion', 'subtotal', 'iva', 'total'];
 
-  constructor( private readonly reportesService: ReportesService, private readonly excelService: ExcelService ) { 
+  constructor( private readonly reportesService: ReportesService, private readonly excelService: ExcelService, private notificationService: NotificationService ) { 
     this.loadProductos();
     this.loadServicios(); 
     this.loadProformas();
@@ -31,6 +33,14 @@ export class ReportesComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  today = new Date();
+  month = this.today.getMonth();
+  year = this.today.getFullYear();
+  campaignOne = new FormGroup({
+    start: new FormControl(new Date(this.year, this.month, 13)),
+    end: new FormControl(new Date(this.year, this.month, 16)),
+  });
 
   loadProformas(): void {
     this.reportesService.obtenerProformas().subscribe(response => {
@@ -72,7 +82,18 @@ export class ReportesComponent implements OnInit {
   }
 
   exportServiciosToExcel(): void {
-    this.excelService.exportAsExcelFile(this.servicios, 'Servicios');
+    const startDate = this.campaignOne.value.start;
+    const endDate = this.campaignOne.value.end;
+    const serviciosFiltrados = this.servicios.filter(servicio => {
+      const fechaSolicitudServicio = new Date(servicio.fechaSolicitudServicio);
+      return fechaSolicitudServicio >= startDate! && fechaSolicitudServicio <= endDate!;
+    });
+    if (serviciosFiltrados.length > 0) {
+          this.excelService.exportAsExcelFile(serviciosFiltrados, 'Servicios');
+    }
+    else {
+      this.notificationService.showError("No hay registros en el rango de fechas seleccionado");
+    }
   }
 
   exportProformasToExcel(): void {
