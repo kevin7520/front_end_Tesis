@@ -228,7 +228,7 @@ export class ProductosComponent implements OnInit, AfterViewInit  {
     if (this.estado != 0) {
       dataTemp = dataTemp.filter(data=> data.estadoProducto.idEstadoProducto == this.estado )
     }
-    if (this.estado != 0) {
+    if (this.categoria != 0) {
       dataTemp = dataTemp.filter(data=> data.categoria.idCategoria == this.categoria )
     }
     this.dataSource = new MatTableDataSource<ItemsResponse>(dataTemp);

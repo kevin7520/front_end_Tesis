@@ -92,7 +92,7 @@
         <td mat-cell *matCellDef="let element"> 
           <div class="w-max flex flex-wrap gap-3">
             <i matTooltip="Editar" class="bi bi-pencil-square cursor-pointer" (click)="activarModalEditar(element.idProducto)"></i>
-            <i matTooltip="Elimnar" class="bi bi-trash-fill cursor-pointer" (click)="activarModalConfirmacionEliminacion(element.idProducto)"></i>
+            <i *ngIf="element.estadoProducto.idEstadoProducto == 1" matTooltip="Elimnar" class="bi bi-trash-fill cursor-pointer" (click)="activarModalConfirmacionEliminacion(element.idProducto)"></i>
           </div>
         </td>
       </ng-container>

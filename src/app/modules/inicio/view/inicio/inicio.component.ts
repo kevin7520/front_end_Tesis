@@ -121,7 +121,7 @@ export class InicioComponent implements OnInit {
   obtenerUsuario() {
     const Rol = localStorage.getItem('id_rol');
     this.rol = Rol!;
-    this._usuarioService.getDatos((Rol == 'Admin' ? 1 : 2)).subscribe(dataResponse => {
+    this._usuarioService.getDatos(Number(localStorage.getItem('id_user'))).subscribe(dataResponse => {
       if (dataResponse.codigo == "200") {
         this.nombreUsuario = dataResponse.data.nombres;
       }

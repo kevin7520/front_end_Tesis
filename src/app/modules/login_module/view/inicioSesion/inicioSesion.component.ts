@@ -34,6 +34,7 @@ export class InicioSesionComponent implements OnInit {
       if (dataResponse.codigo == '200') {
         localStorage.setItem('token', dataResponse.data[0]);
         localStorage.setItem('id_rol', dataResponse.data[1]);
+        localStorage.setItem('id_user', dataResponse.data[2]);
         this.notificationService.showSuccess(dataResponse.mensaje);
         this._router.navigateByUrl("/inicio")
       }
