@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router, Event } from '@angular/router';
+import { NavigationEnd, Router, Event, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs';
 import { UsuarioService } from '../../services/usuario.service';
 
@@ -10,16 +10,18 @@ import { UsuarioService } from '../../services/usuario.service';
 })
 export class InicioComponent implements OnInit {
 
-  constructor( private _router : Router, private _usuarioService: UsuarioService) { }
+  constructor( private _router : Router, private _usuarioService: UsuarioService, private activatedRoute: ActivatedRoute) { }
 
   menu_active: boolean = true;
   nombreUsuario: string = "";
   rol = "";
+  menuActual = "";
 
   menu_items: any[] = []
   ngOnInit() {
     this.obtenerUsuario();
     this.llenarMenu();
+    this.menuActual = this._router.url;
     this.activarMenu(this._router.url);
     this._router.events
     .pipe(filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd))
@@ -115,6 +117,10 @@ export class InicioComponent implements OnInit {
     if(ruta == '/login') {
       localStorage.clear();
     }
+    if (this.menuActual == ruta) {
+      window.location.reload()
+    }
+    this.menuActual = ruta;
     this._router.navigateByUrl(ruta);
   }
 

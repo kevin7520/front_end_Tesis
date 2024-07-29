@@ -13,8 +13,8 @@
     <div *ngIf="menu_active" class="h-full bg-white shadow-7 border-round-sm menu-activado">
       <ng-container *ngFor="let item of menu_items">
         <div class="w-full px-3 pb-3 pt-4 text-lg" 
-             [ngClass]="{'bg-blue-500 text-white': item.active, 'menu-item cursor-pointer': !item.active}"
-             (click)="(!item.active) && cambioMenu(item.ruta)">
+             [ngClass]="{'bg-blue-500 text-white cursor-pointer': item.active, 'menu-item': !item.active}"
+             (click)="cambioMenu(item.ruta)">
           <div class="w-full flex flex-wrap justify-content-between">
             <div class="w-max">
               <i [class]="item.icono"></i> <span class="ml-2">{{item.titulo}}</span>
