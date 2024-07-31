@@ -32,7 +32,7 @@
             <div class="col">
               <mat-form-field style="width: 100%;">
                 <mat-label>Identificación del cliente</mat-label>
-                <input [(ngModel)]="identificacionInput" matInput>
+                <input [maxLength]="10" (keypress)="blockEvent($event)" [(ngModel)]="identificacionInput" matInput>
               </mat-form-field>
             </div>
             <div class="w-max col-fixed flex flex-wrap align-content-center">
@@ -120,6 +120,10 @@
         <mat-label>Identificación</mat-label>
         <input [maxLength]="10" (keypress)="blockEvent($event)"  matInput formControlName="cedula">
       </mat-form-field>
+      <div *ngIf="clientesFormGroup.get('cedula')!.errors?.['minlength'] && clientesFormGroup.get('cedula')!.touched"
+        class="mt-2 text-red-600">
+        La cédula debe tener al menos 10 caracteres.
+      </div>
     </div>
     <div class="col-6">
       <mat-form-field style="width: 100%;" appearance="outline">
@@ -132,6 +136,10 @@
         <mat-label>Teléfono</mat-label>
         <input [maxLength]="10" (keypress)="blockEvent($event)"  matInput formControlName="telefono">
       </mat-form-field>
+      <div *ngIf="clientesFormGroup.get('telefono')!.errors?.['minlength'] && clientesFormGroup.get('telefono')!.touched"
+        class="mt-2 text-red-600">
+        El Teléfono debe tener al menos 10 caracteres.
+      </div>
     </div>
     <div class="col-6">
       <mat-form-field style="width: 100%;" appearance="outline">

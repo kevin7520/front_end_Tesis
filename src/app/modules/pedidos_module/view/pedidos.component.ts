@@ -107,5 +107,13 @@ export class PedidosComponent implements OnInit, AfterViewInit {
     this.paso = 1;
   }
 
+  blockEvent(event: KeyboardEvent) {
+    const pattern = /[0-9]/
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+        event.preventDefault();
+    }
+  }
+
   
 }

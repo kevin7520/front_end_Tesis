@@ -43,9 +43,9 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   identificacionInput: string = "";
 
   clientesFormGroup = new FormGroup({
-    cedula: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(10)]),
+    cedula: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(10), Validators.minLength(10)]),
     nombres: new FormControl('', [Validators.required, Validators.maxLength(50)]),
-    telefono: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(10)]),
+    telefono: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(10), Validators.minLength(10)]),
     direccion: new FormControl('', [Validators.required, Validators.maxLength(50)]),
     correo: new FormControl('', [Validators.required, Validators.maxLength(50),Validators.email]),
     ciudad: new FormControl(1, { validators: Validators.required, updateOn: 'blur' }),

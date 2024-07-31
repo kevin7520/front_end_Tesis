@@ -14,7 +14,7 @@
             <div class="col">
                 <mat-form-field style="width: 100%;">
                     <mat-label>Identificación cliente</mat-label>
-                    <input [(ngModel)]="identificacion" matInput>
+                    <input [maxLength]="10" (keypress)="blockEvent($event)" [(ngModel)]="identificacion" matInput>
                 </mat-form-field>
             </div>
             <div class="col-12 flex flex-wrap justify-content-center gap-4">
